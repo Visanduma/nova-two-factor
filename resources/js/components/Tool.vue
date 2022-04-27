@@ -15,19 +15,33 @@
             </div>
 
             <div v-else class="p-3">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium alias aperiam architecto at,
-                    aut consectetur consequuntur cumque doloremque ducimus
-                    exercitationem non nulla odit officia, suscipit tempore totam unde, voluptates voluptatum.
-                </p>
+              <p class="p-2">Two factor authentication (2FA) strengthens access security by requiring two methods (also
+                referred
+                to as factors) to verify your identity. Two factor authentication protects against phishing, social
+                engineering and password brute force attacks and secures your logins from attackers exploiting weak
+                or stolen credentials.</p>
 
-                <h3 class="my-4">Recovery codes</h3>
+                <h3 class="p-3 my-4">Recovery codes</h3>
+
+              <p class="p-2">
+                Recovery codes are used to access your account in the event you cannot recive two-factor
+                authentication codes.
+              </p>
+              <p class="p-2 no-print">
+                <strong>
+                 1) Download, print or copy your codes before continuing two-factor authentication setup.
+                </strong>
+              </p>
+
                 <ol>
                     <li v-for="(code,k) in twofa.recovery">{{ code }}</li>
                 </ol>
 
 
                 <div class="p-3">
+                  <p>
+                    <strong>2) Scan this QR code using Google authenticator & enter OTP to activate 2FA</strong>
+                  </p>
                     <img width="150" :src="twofa.google2fa_url" alt="qr_code">
                     <br>
                     <input v-model="form.otp" @keyup="autoSubmit()" placeholder="Enter OTP here" type="text" class="w-full form-control form-input form-input-bordered mb-2">
