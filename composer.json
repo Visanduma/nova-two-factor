@@ -1,6 +1,6 @@
 {
     "name": "visanduma/nova-two-factor",
-    "description": "A Laravel Nova tool.",
+    "description": "Nova Two Factor Authentication",
     "keywords": [
         "laravel",
         "nova"

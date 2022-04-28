@@ -1,12 +1,10 @@
 <template>
-  <div>
-    <heading class="mb-6">Two factor auth (Google 2FA)</heading>
-    <card style="max-width: 600px">
-
-
+  <loading-view :loading="loading">
+  <heading class="mb-6">Two factor auth (Google 2FA)</heading>
+    <loading-card :loading="true" class="card" style="max-width: 600px">
       <div class="p-3" v-if="status.confirmed == 1">
-        <p class="m-1">
-          Here you can enable/disable 2 factor security
+        <p class="mb-4">
+          Update your two factor security settings
         </p>
         <input v-model="status.enabled" type="radio" name="status" :value="1" id="s1"> <label for="s1">Enable</label>
         <input v-model="status.enabled" type="radio" name="status" :value="0" id="s2"> <label for="s2">Disabled</label>
@@ -55,8 +53,8 @@
 
       </div>
 
-    </card>
-  </div>
+    </loading-card>
+  </loading-view>
 </template>
 
 <script>
@@ -65,7 +63,8 @@ export default {
     return {
       twofa: [],
       form: {},
-      status: null
+      status: null,
+      loading: true
     }
   },
 
@@ -79,6 +78,7 @@ export default {
       Nova.request().get('/nova-vendor/nova-two-factor/status')
           .then(res => {
             this.status = res.data
+            this.loading = false
           })
     },
 

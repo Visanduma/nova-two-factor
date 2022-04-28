@@ -5,6 +5,8 @@ namespace Visanduma\NovaTwoFactor\Http\Middleware;
 
 
 use Closure;
+use Illuminate\Support\Str;
+use Nette\Utils\Html;
 use PragmaRX\Google2FA\Google2FA as G2fa;
 use Visanduma\NovaTwoFactor\TwoFaAuthenticator;
 
@@ -20,11 +22,14 @@ class TwoFa
      */
     public function handle($request, Closure $next)
     {
+
         $except = [
             'nova-vendor/nova-two-factor/authenticate',
             'nova-vendor/nova-two-factor/recover',
             'nova/logout'
         ];
+
+
         if (!config('nova-two-factor.enabled') || in_array($request->path(),$except)) {
             return $next($request);
         }
