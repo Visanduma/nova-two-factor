@@ -19,9 +19,23 @@ class ToolServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'nova-two-factor');
 
+        Nova::style('price-tracker', __DIR__.'/../dist/css/tool.css');
+
         $this->app->booted(function () {
             $this->routes();
         });
+
+        if ($this->app->runningInConsole()) {
+
+            $this->publishes([
+                __DIR__ . '/../config/nova-two-factor.php' => config_path('nova-two-factor.php'),
+            ], 'nova-two-factor.config');
+
+            $this->publishes([
+                __DIR__.'/../database/migrations/' => database_path('migrations')
+            ], 'migrations');
+        }
+
 
         Nova::serving(function (ServingNova $event) {
             //
@@ -51,6 +65,7 @@ class ToolServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->mergeConfigFrom(__DIR__ . '/../config/nova-two-factor.php', 'nova-two-factor');
+
     }
 }
