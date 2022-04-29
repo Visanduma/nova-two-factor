@@ -1,7 +1,7 @@
 <template>
   <loading-view :loading="loading">
   <heading class="mb-6">Two factor auth (Google 2FA)</heading>
-    <loading-card :loading="true" class="card" style="max-width: 600px">
+    <loading-card :loading="loading" class="card" style="max-width: 600px">
       <div class="p-3" v-if="status.confirmed == 1">
         <p class="mb-4">
           Update your two factor security settings
