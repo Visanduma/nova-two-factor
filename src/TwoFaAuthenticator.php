@@ -3,7 +3,7 @@
 
 namespace Visanduma\NovaTwoFactor;
 
-
+use Exception;
 use PragmaRX\Google2FALaravel\Support\Authenticator;
 
 class TwoFaAuthenticator extends Authenticator
