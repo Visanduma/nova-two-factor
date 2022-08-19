@@ -25,16 +25,22 @@ class TwoFa
 
         $except = [
             'nova-vendor/nova-two-factor/authenticate',
-            'nova-vendor/nova-two-factor/recover',
-            'nova/logout'
+            'nova-vendor/nova-two-factor/recover'
         ];
+
+        $except = array_merge($except,config('nova-two-factor.excect_routes'));
 
 
         if (!config('nova-two-factor.enabled') || in_array($request->path(),$except)) {
             return $next($request);
         }
 
-        // turn off security if n user2fa record
+        $authenticator = app(TwoFaAuthenticator::class)->boot($request);
+        if (auth()->guest() || $authenticator->isAuthenticated()) {
+            return $next($request);
+        }
+
+        // turn off security if no user2fa record
         if(!auth()->user()->twoFa){
             return $next($request);
         }
@@ -44,11 +50,6 @@ class TwoFa
             return $next($request);
         }
 
-
-        $authenticator = app(TwoFaAuthenticator::class)->boot($request);
-        if (auth()->guest() || $authenticator->isAuthenticated()) {
-            return $next($request);
-        }
 
         return response(view('nova-two-factor::sign-in'));
     }

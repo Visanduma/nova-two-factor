@@ -1,18 +1,52 @@
-<!DOCTYPE html>
-<html lang="en" class="h-full font-sans">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@extends('nova-two-factor::layout.default')
 
-    <title>{{ Nova::name() }}</title>
+@section('content')
+<div class="content-center">
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="{{ mix('app.css', 'vendor/nova') }}">
+    <div class="mx-auto py-8 max-w-sm flex justify-center text-black">
 
-    <style>
+    </div>
+    <div class="py-6 px-1 md:px-2 lg:px-6">
 
-    </style>
+        <form id="authenticate_form" method="post" class="bg-white dark:bg-gray-800 shadow rounded-lg p-8 max-w-[25rem] mx-auto" action="{{ route('nova-two-factor.auth') }}">
+        @csrf
+        <h2
+                    class="text-2xl text-center font-normal mb-6 text-90">Two factor authentication</h2>
+            <svg class="block mx-auto mb-6" xmlns="http://www.w3.org/2000/svg" width="100" height="2"
+                 viewBox="0 0 100 2">
+                <path fill="#D8E3EC" d="M0 0h100v2H0z"></path>
+            </svg>
+
+
+            <div class="mb-6"><label class="block font-bold mb-2" for="otp">One time password</label>
+                <input onkeyup="checkAutoSubmit(this)" autofocus
+                        class="form-control form-input form-input-bordered w-full" id="otp" type="password"
+                        name="one_time_password" required="">
+            </div>
+
+            @if($errors->any())
+                <p class="text-center font-semibold text-red-400 my-2">
+                    {{ $errors->first() }}
+                </p>
+            @endif
+
+            <button size="lg" align="center" component="button"
+                    class="w-full flex justify-center shadow relative bg-primary-500 hover:bg-primary-400 text-white dark:text-gray-900 w-full flex justify-center cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 inline-flex items-center justify-center h-9 px-3 w-full flex justify-center shadow relative bg-primary-500 hover:bg-primary-400 text-white dark:text-gray-900 w-full flex justify-center"
+                    type="submit"><span>Authenticate</span></button>
+
+            <div class="flex mt-3 mb-6">
+
+                <div class="ml-auto">
+                    <a class="text-gray-500" href="{{ route('nova-two-factor.recover') }}">Not working ? Use recover code</a></div>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+@endsection
+
+@push('js')
     <script>
         function checkAutoSubmit(el) {
             if (el.value.length === 6) {
@@ -21,44 +55,4 @@
         }
 
     </script>
-</head>
-<body class="bg-40 text-black h-full">
-<div class="h-full">
-    <div class="px-view py-view mx-auto">
-        <div class="mx-auto py-8 max-w-sm text-center text-90">
-            @include('nova::partials.logo')
-        </div>
-        <form id="authenticate_form" class="bg-white shadow rounded-lg p-8 max-w-login mx-auto" method="POST" action="{{ route('nova-two-factor.auth') }}">
-            @csrf
-
-
-            <h2 class="text-2xl text-center font-normal mb-6 text-90">Two factor authentication</h2>
-            <svg class="block mx-auto mb-6" xmlns="http://www.w3.org/2000/svg" width="100" height="2" viewBox="0 0 100 2">
-                <path fill="#D8E3EC" d="M0 0h100v2H0z"></path>
-            </svg>
-            @if($errors->any())
-            <p class="text-center font-semibold text-danger my-3">
-                {{ $errors->first() }}
-            </p>
-            @endif
-            <div class="mb-6 ">
-                <label class="block font-bold mb-2" for="password">One time password</label>
-                <input onkeyup="checkAutoSubmit(this)" autofocus class="form-control form-input form-input-bordered w-full" id="password" type="number" name="one_time_password" required="">
-            </div>
-
-            <div class="flex mb-6">
-                <div class="ml-auto">
-                    <a class="text-primary dim font-bold no-underline" href="{{ route('nova-two-factor.recover') }}">
-                        Use recover code
-                    </a>
-                </div>
-            </div>
-
-            <button class="w-full btn btn-default btn-primary hover:bg-primary-dark" type="submit">
-                Authenticate
-            </button>
-        </form>
-    </div>
-</div>
-</body>
-</html>
+@endpush

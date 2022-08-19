@@ -5,6 +5,7 @@ namespace Visanduma\NovaTwoFactor;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;
+use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Nova;
 use Visanduma\NovaTwoFactor\Http\Middleware\Authorize;
 
@@ -18,8 +19,6 @@ class ToolServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'nova-two-factor');
-
-        Nova::style('price-tracker', __DIR__.'/../dist/css/tool.css');
 
         $this->app->booted(function () {
             $this->routes();
@@ -53,9 +52,13 @@ class ToolServiceProvider extends ServiceProvider
             return;
         }
 
+        Nova::router(['nova', Authenticate::class, Authorize::class], 'nova-two-factor')
+            ->group(__DIR__.'/../routes/inertia.php');
+
         Route::middleware(['nova', Authorize::class])
                 ->prefix('nova-vendor/nova-two-factor')
                 ->group(__DIR__.'/../routes/api.php');
+
     }
 
     /**

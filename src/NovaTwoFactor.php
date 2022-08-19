@@ -2,6 +2,8 @@
 
 namespace Visanduma\NovaTwoFactor;
 
+use Illuminate\Http\Request;
+use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 
@@ -23,8 +25,10 @@ class NovaTwoFactor extends Tool
      *
      * @return \Illuminate\View\View
      */
-    public function renderNavigation()
+    public function menu(Request $request)
     {
-        return view('nova-two-factor::navigation');
+        return MenuSection::make('Nova Two Factor')
+            ->path('/nova-two-factor')
+            ->icon('lock-closed');
     }
 }

@@ -1,9 +1,3 @@
-Nova.booting((Vue, router, store) => {
-  router.addRoutes([
-    {
-      name: 'nova-two-factor',
-      path: '/nova-two-factor',
-      component: require('./components/Tool').default,
-    },
-  ])
+Nova.booting((Vue) => {
+  Nova.inertia("NovaTwoFactor",require('./components/Tool').default)
 })

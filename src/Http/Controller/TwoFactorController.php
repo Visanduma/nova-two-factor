@@ -48,7 +48,8 @@ class TwoFactorController extends Controller
         $google2fa_url = $this->getQRCodeGoogleUrl(
             config('app.name'),
             auth()->user()->email,
-            $secretKey
+            $secretKey,
+            500
         );
 
         $data['google2fa_url'] = $google2fa_url;

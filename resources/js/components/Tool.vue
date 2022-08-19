@@ -1,60 +1,87 @@
 <template>
-  <loading-view :loading="loading">
+  <LoadingView :loading="loading">
   <heading class="mb-6">Two factor auth (Google 2FA)</heading>
-    <loading-card :loading="loading" class="card" style="max-width: 600px">
-      <div class="p-3" v-if="status.confirmed == 1">
-        <p class="mb-4">
-          Update your two factor security settings
-        </p>
-        <input v-model="status.enabled" type="radio" name="status" :value="1" id="s1"> <label for="s1">Enable</label>
-        <input v-model="status.enabled" type="radio" name="status" :value="0" id="s2"> <label for="s2">Disabled</label>
-        <br>
-        <button @click="toggle" class="btn btn-default btn-primary mt-2">Update settings</button>
-      </div>
+    <LoadingCard :loading="loading" class="tw-p-4">
 
-      <div v-else class="p-3">
-        <p class="p-2">Two factor authentication (2FA) strengthens access security by requiring two methods (also
-          referred
-          to as factors) to verify your identity. Two factor authentication protects against phishing, social
-          engineering and password brute force attacks and secures your logins from attackers exploiting weak
-          or stolen credentials.</p>
+      <div class="tw-grid tw-grid-cols-2 tw-gap-4">
+        <div class="">
 
-        <h3 class="p-3 my-4">Recovery codes</h3>
+          <div class="" v-if="status.confirmed == 1">
+            <p class="mb-4">
+              Update your two factor security settings
+            </p>
 
-        <p class="p-2">
-          Recovery codes are used to access your account in the event you cannot recive two-factor
-          authentication codes.
-        </p>
-        <p class="p-2 no-print">
-          <strong>
-            1) Download, print or copy your codes before continuing two-factor authentication setup.
-          </strong>
-        </p>
+            <div class="tw-flex tw-items-center tw-mb-4">
+              <input v-model="status.enabled" :value="1" id="op-enable" type="radio"  class="tw-w-4 tw-h-4 tw-border-gray-300 tw-focus:ring-2 tw-focus:ring-blue-300">
+              <label for="op-enable" class="tw-block tw-ml-2 tw-text-sm tw-font-medium tw-text-gray-900">
+                Enable
+              </label>
+            </div>
 
-        <div class="text-center my-2 p-3 rec-box text-red-900">
-          <h2>{{ twofa.recovery }}</h2>
-          <a @click.prevent="downloadAsText('recover_code.txt', twofa.recovery)" href="#">Download</a>
-        </div>
+            <div class="tw-flex tw-items-center tw-mb-4">
+              <input v-model="status.enabled" :value="0" id="op-disable" type="radio" class="tw-w-4 tw-h-4 tw-border-gray-300 tw-focus:ring-2 tw-focus:ring-blue-300">
+              <label for="op-disable" class="tw-block tw-ml-2 tw-text-sm tw-font-medium tw-text-gray-900">
+                Disable
+              </label>
+            </div>
 
 
+            <br>
 
-        <div class="p-3">
-          <p>
-            <strong>2) Scan this QR code using Google authenticator to setup & enter OTP to activate 2FA</strong>
-          </p>
-          <div class="text-center">
-            <img width="150" :src="twofa.google2fa_url" alt="qr_code">
+            <LoadingButton @click="toggle" >Update Settings</LoadingButton>
+
           </div>
-          <br>
-          <input v-model="form.otp" @keyup="autoSubmit()" placeholder="Enter OTP here" type="text"
-                 class="w-full form-control form-input form-input-bordered mb-2">
-          <button @click="confirmOtp" class="btn btn-default btn-primary">Activate 2FA</button>
-        </div>
 
+          <div v-else class="">
+            <p>
+              Two factor authentication (2FA) strengthens access security by requiring two methods (also
+              referred
+              to as factors) to verify your identity. Two factor authentication protects against phishing, social
+              engineering and password brute force attacks and secures your logins from attackers exploiting weak
+              or stolen credentials.
+            </p>
+
+            <h3 class="tw-my-2 tw-text-xl">Recovery codes</h3>
+
+            <p class="tw-mb-3">
+              Recovery code are used to access your account in the event you cannot recive two-factor
+              authentication codes.
+            </p>
+            <span class="tw-bg-gray-100 tw-text-gray-800 tw-text-xs tw-font-semibold tw-mr-2 tw-px-2.5 tw-py-0.5 tw-rounded ">Step 01</span>
+            <p class="no-print tw-my-4 tw-text-md">
+                Download, print or copy your recovery code before continuing two-factor authentication setup.
+            </p>
+
+            <div class="tw-mb-4 tw-border-dashed tw-border-2 tw-border-light-blue tw-p-4 tw-rounded-lg tw-text-center tw-bg-gray-50">
+              <h2 class="tw-text-xl tw-text-black">{{ twofa.recovery }}</h2>
+              <a class="tw-text-blue-700" @click.prevent="downloadAsText('recover_code.txt', twofa.recovery)" href="#">Download</a>
+            </div>
+
+
+            <span class="tw-bg-gray-100 tw-text-gray-800 tw-text-xs tw-font-semibold tw-mr-2 tw-px-2.5 tw-py-0.5 tw-rounded ">Step 02</span>
+
+            <div class="tw-my-4 tw-text-md">
+                Scan this QR code using Google authenticator to setup & enter OTP to activate 2FA
+
+              <input v-model="form.otp" @keyup="autoSubmit()" placeholder="Enter OTP here" type="text"
+                     class="form-control form-input form-input-bordered tw-my-4">
+              <br>
+              <LoadingButton :loading="loading" :disabled="loading" @click="confirmOtp" class="btn btn-default btn-primary">Activate 2FA</LoadingButton>
+            </div>
+
+          </div>
+
+        </div>
+        <div class="tw-h-full">
+          <div v-if="!status.confirmed" class="tw-flex tw-justify-center tw-content-center tw-w-full tw-p-8">
+            <img width="300" :src="twofa.google2fa_url" alt="qr_code"> {{ status }}
+          </div>
+        </div>
       </div>
 
-    </loading-card>
-  </loading-view>
+
+    </LoadingCard>
+  </LoadingView>
 </template>
 
 <script>
@@ -94,18 +121,19 @@ export default {
         status: this.status.enabled
       })
           .then(res => {
-            this.$toasted.show(res.data.message, {type: 'success'})
+            Nova.success(res.data.message)
           })
     },
 
     confirmOtp() {
       Nova.request().post('/nova-vendor/nova-two-factor/confirm', this.form)
           .then(res => {
-            this.$toasted.show(res.data.message, {type: 'success'})
+
+           Nova.success(res.data.message)
             this.getStatus()
           })
           .catch(err => {
-            this.$toasted.show(err.response.data.message, {type: 'error'})
+            Nova.error(err.response.data.message)
           })
     },
 
@@ -114,6 +142,7 @@ export default {
         this.confirmOtp()
       }
     },
+
     downloadAsText(filename, text) {
       var element = document.createElement('a');
       element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
@@ -126,6 +155,10 @@ export default {
 
       document.body.removeChild(element);
     }
+  },
+
+  computed: {
+    //
   }
 }
 </script>
