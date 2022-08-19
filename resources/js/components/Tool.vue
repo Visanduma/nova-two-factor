@@ -74,7 +74,7 @@
         </div>
         <div class="tw-h-full">
           <div v-if="!status.confirmed" class="tw-flex tw-justify-center tw-content-center tw-w-full tw-p-8">
-            <img width="300" :src="twofa.google2fa_url" alt="qr_code"> {{ status }}
+            <img width="300" :src="twofa.google2fa_url" alt="qr_code">
           </div>
         </div>
       </div>
