@@ -15,7 +15,7 @@ return [
     'user_model' => \App\Models\User::class,
 
 
-    'excect_routes' => [
+    'except_routes' => [
         //
     ]
 

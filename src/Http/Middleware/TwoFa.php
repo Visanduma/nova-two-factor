@@ -28,7 +28,7 @@ class TwoFa
             'nova-vendor/nova-two-factor/recover'
         ];
 
-        $except = array_merge($except,config('nova-two-factor.excect_routes'));
+        $except = array_merge($except,config('nova-two-factor.except_routes'));
 
 
         if (!config('nova-two-factor.enabled') || in_array($request->path(),$except)) {
