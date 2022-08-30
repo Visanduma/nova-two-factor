@@ -36,6 +36,7 @@ class TwoFa
         }
 
         $authenticator = app(TwoFaAuthenticator::class)->boot($request);
+
         if (auth()->guest() || $authenticator->isAuthenticated()) {
             return $next($request);
         }
