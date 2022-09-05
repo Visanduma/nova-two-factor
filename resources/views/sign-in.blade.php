@@ -37,7 +37,9 @@
             <div class="flex mt-3 mb-6">
 
                 <div class="ml-auto">
-                    <a class="text-gray-500" href="{{ route('nova-two-factor.recover') }}">Not working ? Use recover code</a></div>
+                    Not working ? <a href="{{ route('nova-two-factor.recover') }}">Use recover code</a>
+                    <br>
+                </div>
             </div>
 
         </form>
@@ -48,11 +50,14 @@
 
 @push('js')
     <script>
+
+
         function checkAutoSubmit(el) {
             if (el.value.length === 6) {
                 document.getElementById('authenticate_form').submit();
             }
         }
+
 
     </script>
 @endpush

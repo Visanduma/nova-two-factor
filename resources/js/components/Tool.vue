@@ -7,20 +7,20 @@
         <div class="">
 
           <div class="" v-if="status.confirmed == 1">
-            <p class="mb-4">
+            <p class="mb-4 text-slate-900 dark:text-slate-400">
               Update your two factor security settings
             </p>
 
             <div class="tw-flex tw-items-center tw-mb-4">
               <input v-model="status.enabled" :value="1" id="op-enable" type="radio"  class="tw-w-4 tw-h-4 tw-border-gray-300 tw-focus:ring-2 tw-focus:ring-blue-300">
-              <label for="op-enable" class="tw-block tw-ml-2 tw-text-sm tw-font-medium tw-text-gray-900">
+              <label for="op-enable" class="tw-block tw-ml-2 tw-text-sm tw-font-medium dark:text-white">
                 Enable
               </label>
             </div>
 
             <div class="tw-flex tw-items-center tw-mb-4">
               <input v-model="status.enabled" :value="0" id="op-disable" type="radio" class="tw-w-4 tw-h-4 tw-border-gray-300 tw-focus:ring-2 tw-focus:ring-blue-300">
-              <label for="op-disable" class="tw-block tw-ml-2 tw-text-sm tw-font-medium tw-text-gray-900">
+              <label for="op-disable" class="tw-block tw-ml-2 tw-text-sm tw-font-medium dark:text-white">
                 Disable
               </label>
             </div>
@@ -52,7 +52,7 @@
                 Download, print or copy your recovery code before continuing two-factor authentication setup.
             </p>
 
-            <div class="tw-mb-4 tw-border-dashed tw-border-2 tw-border-light-blue tw-p-4 tw-rounded-lg tw-text-center tw-bg-gray-50">
+            <div class="tw-mb-4 tw-border-dashed tw-border-2 tw-border-light-blue dark:border-gray-500 tw-p-4 tw-rounded-lg tw-text-center tw-bg-gray-50 dark:bg-gray-700">
               <h2 class="tw-text-xl tw-text-black">{{ twofa.recovery }}</h2>
               <a class="tw-text-blue-700" @click.prevent="downloadAsText('recover_code.txt', twofa.recovery)" href="#">Download</a>
             </div>
@@ -74,7 +74,7 @@
         </div>
         <div class="tw-h-full">
           <div v-if="!status.confirmed" class="tw-flex tw-justify-center tw-content-center tw-w-full tw-p-8">
-            <img width="300" :src="twofa.google2fa_url" alt="qr_code">
+            <img width="250" :src="twofa.google2fa_url" alt="qr_code">
           </div>
         </div>
       </div>

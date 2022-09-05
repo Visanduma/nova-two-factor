@@ -11,8 +11,17 @@
     <link rel="stylesheet" href="{{ mix('app.css', 'vendor/nova') }}">
 
 </head>
-<body class="min-w-site text-sm font-medium min-h-full text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-900">
+<body class="min-w-site text-sm font-medium min-h-full text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-900" onload="themeSwitch()">
     @yield('content')
+
+
+    <script type="text/javascript">
+        function themeSwitch(){
+            if(window.localStorage.getItem('novaTheme') === 'dark'){
+                document.getElementsByTagName('html')[0].classList.add('dark')
+            }
+        }
+    </script>
 
 @stack('js')
 </body>
