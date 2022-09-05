@@ -34,7 +34,8 @@ Change configs as your needs
 ``` 
 
 return [
-    // enable or disale 2FA feature. default is enabled
+    
+     // enable or disale 2FA feature. default is enabled
     'enabled' => env('NOVA_TWO_FA_ENABLE',true),
     
     // name of authenticatable entity table. usually - users
@@ -45,6 +46,18 @@ return [
     
     // authenticatable model class
     'user_model' => \App\Models\User::class
+
+    /* Change visibility of Nova Two Fa menu in right sidebar */
+    'showin_sidebar' => true,
+
+    'menu_text' => 'Two FA',
+
+    'menu_icon' => 'lock-closed',
+
+    /* Exclude any routes from 2fa security */
+    'except_routes' => [
+        //
+    ]
 
 ];
 
