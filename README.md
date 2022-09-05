@@ -21,12 +21,12 @@ Use ^v1.0.0 for Laravel Nova 3
 ```
 \\ Nova 4
 
-composer require visanduma/nova-two-factor:2
+composer require visanduma/nova-two-factor:~2
 
 
 \\ Nova 3
 
-composer require visanduma/nova-two-factor:1
+composer require visanduma/nova-two-factor:~1
 
 ```
 
