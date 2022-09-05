@@ -27,8 +27,11 @@ class NovaTwoFactor extends Tool
      */
     public function menu(Request $request)
     {
-        return MenuSection::make('Nova Two Factor')
-            ->path('/nova-two-factor')
-            ->icon('lock-closed');
+        if(config('nova-two-factor.showin_sidebar', true)){
+            return MenuSection::make(config('nova-two-factor.menu_text'))
+                ->path('/nova-two-factor')
+                ->icon(config('nova-two-factor.menu_icon'));
+        }
+
     }
 }
