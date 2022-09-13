@@ -2,6 +2,7 @@
 
 namespace Visanduma\NovaTwoFactor;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;
@@ -18,6 +19,7 @@ class ToolServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->loadJsonTranslationsFrom(lang_path('vendor/nova-two-factor'));
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'nova-two-factor');
 
         $this->app->booted(function () {
@@ -33,11 +35,17 @@ class ToolServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__.'/../database/migrations/' => database_path('migrations')
             ], 'migrations');
+
+            $this->publishes([
+                __DIR__.'/../resources/lang' => lang_path('vendor/nova-two-factor')
+            ], 'translations');
         }
-
-
+        
         Nova::serving(function (ServingNova $event) {
-            //
+            $localeFile = lang_path('vendor/nova-two-factor/' . app()->getLocale() . '.json');
+            if (File::exists($localeFile)) {
+                Nova::translations($localeFile);
+            }
         });
     }
 
