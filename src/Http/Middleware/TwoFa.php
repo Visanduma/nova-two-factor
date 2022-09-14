@@ -12,6 +12,13 @@ use Visanduma\NovaTwoFactor\TwoFaAuthenticator;
 
 class TwoFa
 {
+    private $novaGuard;
+
+    public function __construct()
+    {
+        $this->novaGuard = config('nova.guard', 'web');
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -37,17 +44,17 @@ class TwoFa
 
         $authenticator = app(TwoFaAuthenticator::class)->boot($request);
 
-        if (auth()->guest() || $authenticator->isAuthenticated()) {
+        if (auth($this->novaGuard)->guest() || $authenticator->isAuthenticated()) {
             return $next($request);
         }
 
         // turn off security if no user2fa record
-        if(!auth()->user()->twoFa){
+        if(!auth($this->novaGuard)->user()->twoFa){
             return $next($request);
         }
 
         // turn off security if 2fa is off
-        if(auth()->user()->twoFa && auth()->user()->twoFa->google2fa_enable === 0){
+        if(auth($this->novaGuard)->user()->twoFa && auth($this->novaGuard)->user()->twoFa->google2fa_enable === 0){
             return $next($request);
         }
 
