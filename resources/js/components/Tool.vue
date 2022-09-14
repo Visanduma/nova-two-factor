@@ -40,7 +40,7 @@
             <h3 class="tw-my-2 tw-text-xl">{{ __('Recovery codes') }}</h3>
 
             <p class="tw-mb-3">
-              {{ __('Recovery code are used to access your account in the event you cannot recive two-factor authentication codes.') }}
+              {{ __('Recovery code are used to access your account in the event you cannot receive two-factor authentication codes.') }}
             </p>
             <span class="tw-bg-gray-100 tw-text-gray-800 tw-text-xs tw-font-semibold tw-mr-2 tw-px-2.5 tw-py-0.5 tw-rounded ">{{ __('Step 01') }}</span>
             <p class="no-print tw-my-4 tw-text-md">

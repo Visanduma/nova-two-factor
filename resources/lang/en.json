@@ -23,7 +23,7 @@
   "Update Settings": "Update Settings",
   "Two factor authentication (2FA) strengthens access security by requiring two methods (also referred to as factors) to verify your identity. Two factor authentication protects against phishing, social engineering and password brute force attacks and secures your logins from attackers exploiting weak or stolen credentials.": "Two factor authentication (2FA) strengthens access security by requiring two methods (also referred to as factors) to verify your identity. Two factor authentication protects against phishing, social engineering and password brute force attacks and secures your logins from attackers exploiting weak or stolen credentials.",
   "Recovery codes": "Recovery codes",
-  "Recovery code are used to access your account in the event you cannot recive two-factor authentication codes.": "Recovery code are used to access your account in the event you cannot recive two-factor authentication codes.",
+  "Recovery code are used to access your account in the event you cannot receive two-factor authentication codes.": "Recovery code are used to access your account in the event you cannot receive two-factor authentication codes.",
   "Step 01": "Step 01",
   "Download, print or copy your recovery code before continuing two-factor authentication setup.": "Download, print or copy your recovery code before continuing two-factor authentication setup.",
   "Download": "Download",
