@@ -14,10 +14,17 @@ use Visanduma\NovaTwoFactor\TwoFaAuthenticator;
 
 class TwoFactorController extends Controller
 {
+    private $novaGuard;
+
+    public function __construct()
+    {
+        $this->novaGuard = config('nova.guard', 'web');
+    }
+    
     public function registerUser()
     {
 
-        if(auth()->user()->twoFa && auth()->user()->twoFa->confirmed == 1){
+        if(auth($this->novaGuard)->user()->twoFa && auth($this->novaGuard)->user()->twoFa->confirmed == 1){
             return response()->json([
                 'message' => 'Already verified !'
             ]);
@@ -36,9 +43,9 @@ class TwoFactorController extends Controller
 
 
         $userTwoFa = new TwoFa();
-        $userTwoFa::where('user_id', auth()->user()->id)->delete();
+        $userTwoFa::where('user_id', auth($this->novaGuard)->user()->id)->delete();
         $user2fa = new $userTwoFa();
-        $user2fa->user_id = auth()->user()->id;
+        $user2fa->user_id = auth($this->novaGuard)->user()->id;
         $user2fa->google2fa_secret = $secretKey;
         $user2fa->recovery = $recoveryKeyHashed;
         $user2fa->save();
@@ -47,7 +54,7 @@ class TwoFactorController extends Controller
 
         $google2fa_url = $this->getQRCodeGoogleUrl(
             config('app.name'),
-            auth()->user()->email,
+            auth($this->novaGuard)->user()->email,
             $secretKey,
             500
         );
@@ -67,7 +74,7 @@ class TwoFactorController extends Controller
         if ($authenticator->isAuthenticated()) {
             // otp auth success!
 
-            auth()->user()->twoFa()->update([
+            auth($this->novaGuard)->user()->twoFa()->update([
                 'confirmed' => true,
                 'google2fa_enable' => true
             ]);
@@ -86,7 +93,7 @@ class TwoFactorController extends Controller
     public function toggle2Fa(Request $request)
     {
         $status = $request->get('status') === 1;
-        auth()->user()->twoFa()->update([
+        auth($this->novaGuard)->user()->twoFa()->update([
             'google2fa_enable' => $status
         ]);
 
@@ -97,12 +104,12 @@ class TwoFactorController extends Controller
 
     public function getStatus()
     {
-        $user = auth()->user();
+        $user = auth($this->novaGuard)->user();
 
         $res = [
             "registered" => !empty($user->twoFa),
-            "enabled" => auth()->user()->twoFa->google2fa_enable ?? false,
-            "confirmed" => auth()->user()->twoFa->confirmed ?? false
+            "enabled" => auth($this->novaGuard)->user()->twoFa->google2fa_enable ?? false,
+            "confirmed" => auth($this->novaGuard)->user()->twoFa->confirmed ?? false
         ];
         return $res;
     }
@@ -146,9 +153,9 @@ class TwoFactorController extends Controller
             return view('nova-two-factor::recover');
         }
 
-        if(Hash::check($request->get('recovery_code'), auth()->user()->twoFa->recovery)){
+        if(Hash::check($request->get('recovery_code'), auth($this->novaGuard)->user()->twoFa->recovery)){
             // reset 2fa
-            auth()->user()->twoFa()->delete();
+            auth($this->novaGuard)->user()->twoFa()->delete();
             return redirect()->to(config('nova.path'));
         }else{
             return back()->withErrors(['Incorrect recovery code !']);
