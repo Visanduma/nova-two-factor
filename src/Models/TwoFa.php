@@ -10,6 +10,11 @@ class TwoFa extends Model
 {
     protected $table = 'nova_twofa';
 
+    protected $casts = [
+        'confirmed' => 'boolean',
+        'google2fa_enable' => 'boolean'
+    ];
+
 
     public function user(): BelongsTo
     {

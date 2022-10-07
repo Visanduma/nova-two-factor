@@ -5,9 +5,6 @@ namespace Visanduma\NovaTwoFactor\Http\Middleware;
 
 
 use Closure;
-use Illuminate\Support\Str;
-use Nette\Utils\Html;
-use PragmaRX\Google2FA\Google2FA as G2fa;
 use Visanduma\NovaTwoFactor\TwoFaAuthenticator;
 
 class TwoFa
@@ -44,17 +41,19 @@ class TwoFa
 
         $authenticator = app(TwoFaAuthenticator::class)->boot($request);
 
-        if (auth($this->novaGuard)->guest() || $authenticator->isAuthenticated()) {
+         // turn off security if  user has not 2fa record
+        if(!auth($this->novaGuard)->user()?->twoFa){
             return $next($request);
         }
 
-        // turn off security if no user2fa record
-        if(!auth($this->novaGuard)->user()->twoFa){
+
+        // allow access if already authenticated
+        if ($authenticator->isAuthenticated()) {
             return $next($request);
         }
 
         // turn off security if 2fa is off
-        if(auth($this->novaGuard)->user()->twoFa && auth($this->novaGuard)->user()->twoFa->google2fa_enable === 0){
+        if(!auth($this->novaGuard)->user()?->twoFa?->google2fa_enable){
             return $next($request);
         }
 

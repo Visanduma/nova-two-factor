@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use PragmaRX\Google2FA\Google2FA;
 use PragmaRX\Google2FA\Google2FA as G2fa;
 use Visanduma\NovaTwoFactor\Models\TwoFa;
 use Visanduma\NovaTwoFactor\TwoFaAuthenticator;
@@ -20,11 +19,11 @@ class TwoFactorController extends Controller
     {
         $this->novaGuard = config('nova.guard', 'web');
     }
-    
+
     public function registerUser()
     {
 
-        if(auth($this->novaGuard)->user()->twoFa && auth($this->novaGuard)->user()->twoFa->confirmed == 1){
+        if (auth($this->novaGuard)->user()->twoFa && auth($this->novaGuard)->user()->twoFa->confirmed == 1) {
             return response()->json([
                 'message' => __('Already verified !')
             ]);
@@ -34,8 +33,8 @@ class TwoFactorController extends Controller
         $secretKey = $google2fa->generateSecretKey();
 
         $recoveryKey = strtoupper(Str::random(16));
-        $recoveryKey = str_split($recoveryKey,4);
-        $recoveryKey = implode("-",$recoveryKey);
+        $recoveryKey = str_split($recoveryKey, 4);
+        $recoveryKey = implode("-", $recoveryKey);
 
         $recoveryKeyHashed = bcrypt($recoveryKey);
 
@@ -49,8 +48,6 @@ class TwoFactorController extends Controller
         $user2fa->google2fa_secret = $secretKey;
         $user2fa->recovery = $recoveryKeyHashed;
         $user2fa->save();
-
-
 
         $google2fa_url = $this->getQRCodeGoogleUrl(
             config('app.name'),
@@ -87,12 +84,13 @@ class TwoFactorController extends Controller
         // auth fail
         return response()->json([
             'message' => __('Invalid OTP !. Please try again')
-        ],422);
+        ], 422);
     }
 
     public function toggle2Fa(Request $request)
     {
-        $status = $request->get('status') === 1;
+        $status = $request->get('status', false);
+
         auth($this->novaGuard)->user()->twoFa()->update([
             'google2fa_enable' => $status
         ]);
@@ -108,8 +106,8 @@ class TwoFactorController extends Controller
 
         $res = [
             "registered" => !empty($user->twoFa),
-            "enabled" => auth($this->novaGuard)->user()->twoFa->google2fa_enable ?? false,
-            "confirmed" => auth($this->novaGuard)->user()->twoFa->confirmed ?? false
+            "enabled" => auth($this->novaGuard)->user()->twoFa->google2fa_enable,
+            "confirmed" => auth($this->novaGuard)->user()->twoFa->confirmed
         ];
         return $res;
     }
@@ -119,25 +117,21 @@ class TwoFactorController extends Controller
         $g2fa = new G2fa();
         $url = $g2fa->getQRCodeUrl($company, $holder, $secret);
 
-        return self::generateGoogleQRCodeUrl('https://chart.googleapis.com/', 'chart', 'chs='.$size.'x'.$size.'&chld=M|0&cht=qr&chl=', $url);
+        return self::generateGoogleQRCodeUrl('https://chart.googleapis.com/', 'chart', 'chs=' . $size . 'x' . $size . '&chld=M|0&cht=qr&chl=', $url);
     }
 
     public static function generateGoogleQRCodeUrl($domain, $page, $queryParameters, $qrCodeUrl)
     {
-        $url = $domain.
-            rawurlencode($page).
-            '?'.$queryParameters.
+        $url = $domain .
+            rawurlencode($page) .
+            '?' . $queryParameters .
             urlencode($qrCodeUrl);
 
         return $url;
     }
 
-    // Form uses
-
     public function authenticate(Request $request)
     {
-
-
         $authenticator = app(TwoFaAuthenticator::class)->boot(request());
 
         if ($authenticator->isAuthenticated()) {
@@ -149,17 +143,16 @@ class TwoFactorController extends Controller
 
     public function recover(Request $request)
     {
-        if($request->isMethod('get')){
+        if ($request->isMethod('get')) {
             return view('nova-two-factor::recover');
         }
 
-        if(Hash::check($request->get('recovery_code'), auth($this->novaGuard)->user()->twoFa->recovery)){
+        if (Hash::check($request->get('recovery_code'), auth($this->novaGuard)->user()->twoFa->recovery)) {
             // reset 2fa
             auth($this->novaGuard)->user()->twoFa()->delete();
             return redirect()->to(config('nova.path'));
-        }else{
+        } else {
             return back()->withErrors([__('Incorrect recovery code !')]);
         }
     }
-
 }
