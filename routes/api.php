@@ -26,3 +26,7 @@ Route::post('/confirm', [\Visanduma\NovaTwoFactor\Http\Controller\TwoFactorContr
 Route::post('/toggle', [\Visanduma\NovaTwoFactor\Http\Controller\TwoFactorController::class,'toggle2Fa']);
 
 Route::post('/authenticate', [\Visanduma\NovaTwoFactor\Http\Controller\TwoFactorController::class,'authenticate'])->name('nova-two-factor.auth');
+
+Route::post('validatePrompt', [\Visanduma\NovaTwoFactor\Http\Controller\TwoFactorController::class,'validatePrompt']);
+
+Route::view('auth-otp','nova-two-factor::sign-in')->name('nova-two-factor.auth-form');

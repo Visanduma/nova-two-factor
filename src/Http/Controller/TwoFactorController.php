@@ -2,7 +2,6 @@
 
 namespace Visanduma\NovaTwoFactor\Http\Controller;
 
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -22,7 +21,6 @@ class TwoFactorController extends Controller
 
     public function registerUser()
     {
-
         if (auth($this->novaGuard)->user()->twoFa && auth($this->novaGuard)->user()->twoFa->confirmed == 1) {
             return response()->json([
                 'message' => __('Already verified !')
@@ -135,7 +133,11 @@ class TwoFactorController extends Controller
         $authenticator = app(TwoFaAuthenticator::class)->boot(request());
 
         if ($authenticator->isAuthenticated()) {
-            return redirect()->to(config('nova.path'));
+            session()->put('2fa.logged_at', now());
+            session()->put('2fa.prompt', false);
+
+
+            return redirect()->intended(config('nova.path'));
         }
 
         return back()->withErrors([__('Incorrect OTP !')]);
@@ -154,5 +156,24 @@ class TwoFactorController extends Controller
         } else {
             return back()->withErrors([__('Incorrect recovery code !')]);
         }
+    }
+
+    public function validatePrompt(Request $request)
+    {
+        $authenticator = app(TwoFaAuthenticator::class)->boot($request);
+
+        if ($authenticator->isValidOtp()) {
+
+            session()->put('2fa.prompt_at', now());
+
+            return response()->json([
+                'goto' => session()->get('url.intended')
+            ]);
+        }
+
+
+        return response()->json([
+                'message' =>  __('Incorrect OTP')
+            ], 422);
     }
 }

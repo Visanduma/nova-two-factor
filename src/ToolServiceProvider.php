@@ -40,13 +40,14 @@ class ToolServiceProvider extends ServiceProvider
                 __DIR__.'/../resources/lang' => lang_path('vendor/nova-two-factor')
             ], 'translations');
         }
-        
+
         Nova::serving(function (ServingNova $event) {
             $localeFile = lang_path('vendor/nova-two-factor/' . app()->getLocale() . '.json');
             if (File::exists($localeFile)) {
                 Nova::translations($localeFile);
             }
         });
+
     }
 
     /**

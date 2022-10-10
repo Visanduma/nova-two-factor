@@ -27,11 +27,34 @@ class NovaTwoFactor extends Tool
      */
     public function menu(Request $request)
     {
-        if(config('nova-two-factor.showin_sidebar', true)){
+        if (config('nova-two-factor.showin_sidebar', true)) {
             return MenuSection::make(config('nova-two-factor.menu_text'))
                 ->path('/nova-two-factor')
                 ->icon(config('nova-two-factor.menu_icon'));
         }
+    }
 
+    public static function promptEnabled($request)
+    {
+        $promptFor = config('nova-two-factor.reauthorize_urls',[]);
+
+
+        $hasUrl = $request->is($promptFor);
+
+        $lastAttempt = session()->get('2fa.prompt_at', now());
+
+        if ($lastAttempt->diffInMinutes(now()) > config('nova-two-factor.reauthorize_timeout', 5) && $hasUrl) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public static function prompt()
+    {
+        redirect()->setIntendedUrl(request()->url());
+
+        return inertia('NovaTwoFactor.Prompt');
     }
 }

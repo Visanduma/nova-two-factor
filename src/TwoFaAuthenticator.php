@@ -29,4 +29,9 @@ class TwoFaAuthenticator extends Authenticator
 
         return $secret;
     }
+
+    public function isValidOtp():bool
+    {
+        return $this->checkOTP() == 'valid';
+    }
 }

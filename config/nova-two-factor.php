@@ -29,6 +29,16 @@ return [
     /* Exclude any routes from 2fa security */
     'except_routes' => [
         //
-    ]
+    ],
+
+    // re authorize these urls before access, withing given timeout
+    'reauthorize_urls' => [
+        'nova/resources/users/new',
+        'nova/resources/users/*/edit',
+        'nova/resources/users/*',
+    ],
+
+    // timeout in minutes
+    'reauthorize_timeout' => 5,
 
 ];

@@ -5,6 +5,7 @@ namespace Visanduma\NovaTwoFactor\Http\Middleware;
 
 
 use Closure;
+use Visanduma\NovaTwoFactor\NovaTwoFactor;
 use Visanduma\NovaTwoFactor\TwoFaAuthenticator;
 
 class TwoFa
@@ -29,8 +30,10 @@ class TwoFa
 
         $except = [
             'nova-vendor/nova-two-factor/authenticate',
-            'nova-vendor/nova-two-factor/recover'
+            'nova-vendor/nova-two-factor/recover',
+            'nova-vendor/nova-two-factor/validatePrompt',
         ];
+
 
         $except = array_merge($except,config('nova-two-factor.except_routes'));
 
@@ -46,9 +49,14 @@ class TwoFa
             return $next($request);
         }
 
+        // re prompt for OTP
+        if(NovaTwoFactor::promptEnabled($request)){
+            return NovaTwoFactor::prompt();
+        }
 
         // allow access if already authenticated
         if ($authenticator->isAuthenticated()) {
+            // return inertia('NovaTwoFactor.Prompt');
             return $next($request);
         }
 
@@ -56,7 +64,6 @@ class TwoFa
         if(!auth($this->novaGuard)->user()?->twoFa?->google2fa_enable){
             return $next($request);
         }
-
 
         return response(view('nova-two-factor::sign-in'));
     }
