@@ -40,7 +40,7 @@ class TwoFa
         }
 
         // turn off security if 2fa is off
-        if(auth()->user()->twoFa && auth()->user()->twoFa->google2fa_enable === 0){
+        if(auth()->user()->twoFa && !auth()->user()->twoFa->google2fa_enable){
             return $next($request);
         }
 
