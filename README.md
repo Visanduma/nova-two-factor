@@ -7,10 +7,17 @@
 [![Latest Stable Version](http://poser.pugx.org/visanduma/nova-two-factor/v)](https://packagist.org/packages/visanduma/nova-two-factor) [![Total Downloads](http://poser.pugx.org/visanduma/nova-two-factor/downloads)](https://packagist.org/packages/visanduma/nova-two-factor) [![Latest Unstable Version](http://poser.pugx.org/visanduma/nova-two-factor/v/unstable)](https://packagist.org/packages/visanduma/nova-two-factor) [![License](http://poser.pugx.org/visanduma/nova-two-factor/license)](https://packagist.org/packages/visanduma/nova-two-factor) [![PHP Version Require](http://poser.pugx.org/visanduma/nova-two-factor/require/php)](https://packagist.org/packages/visanduma/nova-two-factor)
 
 # Nova-Two-Factor
-Laravel nova in-dashboard 2FA security feature
+Laravel nova in-dashboard 2FA security feature.
 
 
-## Look
+## Whats New
+
+### v2.2.0
+- Reauthorize any routes using *2FA Prompt* dialog.
+
+
+
+## Interface
 
 Setup 2FA
 
@@ -24,6 +31,11 @@ Nova login screen with 2FA security
 
 ![screenshot](/resources/img/sc-3.png)
 
+Reauthorize any route using 2FA prompt
+
+![screenshot](/resources/img/sc-4.png)
+
+
 1. Pubish config & migration
 
 `` php artisan vendor:publish --provider="Visanduma\NovaTwoFactor\ToolServiceProvider" ``
@@ -35,7 +47,7 @@ Change configs as your needs
 
 return [
     
-     // enable or disale 2FA feature. default is enabled
+     // enable or disable 2FA feature. default is enabled
     'enabled' => env('NOVA_TWO_FA_ENABLE',true),
     
     // name of authenticatable entity table. usually - users
@@ -57,7 +69,21 @@ return [
     /* Exclude any routes from 2fa security */
     'except_routes' => [
         //
-    ]
+    ],
+
+    /**
+     * reauthorize these urls before access, withing given timeout
+     * you are allowed to use wildcards pattern for url matching
+     **/
+
+    'reauthorize_urls' => [
+       // 'nova/resources/users/new',
+       // 'nova/resources/users/*/edit',
+    ],
+
+    /* timeout in minutes */
+
+    'reauthorize_timeout' => 5,
 
 ];
 
