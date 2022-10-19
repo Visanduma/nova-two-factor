@@ -36,14 +36,16 @@ class NovaTwoFactor extends Tool
 
     public static function promptEnabled($request)
     {
-        $promptFor = config('nova-two-factor.reauthorize_urls',[]);
 
+        $timeout = config('nova-two-factor.reauthorize_timeout', 5);
+
+        $promptFor = config('nova-two-factor.reauthorize_urls',[]);
 
         $hasUrl = $request->is($promptFor);
 
-        $lastAttempt = session()->get('2fa.prompt_at', now());
+        $lastAttempt = session()->get('2fa.prompt_at', now()->subMinutes($timeout + 1));
 
-        if ($lastAttempt->diffInMinutes(now()) > config('nova-two-factor.reauthorize_timeout', 5) && $hasUrl) {
+        if ($lastAttempt->diffInMinutes(now()) > $timeout && $hasUrl) {
             return true;
         }
 

@@ -31,14 +31,16 @@ return [
         //
     ],
 
-    // re authorize these urls before access, withing given timeout
+    /**
+     * reauthorize these urls before access, withing given timeout
+     * you are allowed to use wildcards pattern for url matching
+     **/
     'reauthorize_urls' => [
-        'nova/resources/users/new',
-        'nova/resources/users/*/edit',
-        'nova/resources/users/*',
+       // 'nova/resources/users/new',
+       // 'nova/resources/users/*/edit',
     ],
 
-    // timeout in minutes
+    /* timeout in minutes */
     'reauthorize_timeout' => 5,
 
 ];
