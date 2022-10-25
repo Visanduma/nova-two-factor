@@ -102,12 +102,12 @@ class TwoFactorController extends Controller
     {
         $user = auth($this->novaGuard)->user();
 
-        $res = [
+        return [
             "registered" => !empty($user->twoFa),
-            "enabled" => auth($this->novaGuard)->user()->twoFa->google2fa_enable,
-            "confirmed" => auth($this->novaGuard)->user()->twoFa->confirmed
+            "enabled" => auth($this->novaGuard)->user()->twoFa->google2fa_enable ?? false,
+            "confirmed" => auth($this->novaGuard)->user()->twoFa->confirmed ?? false
         ];
-        return $res;
+        
     }
 
     public function getQRCodeGoogleUrl($company, $holder, $secret, $size = 200)
