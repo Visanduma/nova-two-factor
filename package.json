@@ -13,7 +13,7 @@
   "devDependencies": {
     "@vue/compiler-sfc": "^3.2.22",
     "laravel-mix": "^6.0.41",
-    "node-sass": "^7.0.1",
+    "node-sass": "^7.0.3",
     "postcss": "^8.3.11",
     "sass": "^1.54.4",
     "sass-loader": "^10.3.1",
