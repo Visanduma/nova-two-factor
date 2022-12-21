@@ -57,8 +57,8 @@
 
             <div class="tw-my-4 tw-text-md">
               {{ __('Scan this QR code using Google authenticator to setup & enter OTP to activate 2FA') }}
-
-              <input v-model="form.otp" @keyup="autoSubmit()" placeholder="Enter OTP here" type="text"
+              <br>
+              <input v-model="form.otp" @keyup="autoSubmit()" :placeholder="__('Enter OTP here')" type="text"
                      class="form-control form-input form-input-bordered tw-my-4">
               <br>
               <LoadingButton :loading="loading" :disabled="loading" @click="confirmOtp" class="btn btn-default btn-primary">{{ __('Activate 2FA') }}</LoadingButton>
