@@ -89,8 +89,6 @@
                     </div>
                 </div>
             </div>
-
-
         </LoadingCard>
     </LoadingView>
 </template>

@@ -9,8 +9,9 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('app.css', 'vendor/nova') }}">
+
     <style>
-    {{ Nova::brandColorsCSS() }}
+        {{ Nova::brandColorsCSS() }}
     </style>
 
     <script>
