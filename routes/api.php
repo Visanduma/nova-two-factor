@@ -29,4 +29,6 @@ Route::post('/authenticate', [\Visanduma\NovaTwoFactor\Http\Controller\TwoFactor
 
 Route::post('validatePrompt', [\Visanduma\NovaTwoFactor\Http\Controller\TwoFactorController::class,'validatePrompt']);
 
+Route::post('clear', [\Visanduma\NovaTwoFactor\Http\Controller\TwoFactorController::class,'clear']);
+
 Route::view('auth-otp','nova-two-factor::sign-in')->name('nova-two-factor.auth-form');

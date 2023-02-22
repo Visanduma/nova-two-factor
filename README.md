@@ -12,6 +12,8 @@ Laravel nova in-dashboard 2FA security feature.
 
 ## Whats New
 
+### v2.2.2
+- Clear option for current Two  FA settings
 ### v2.2.0
 - Reauthorize any routes using *2FA Prompt* dialog.
 

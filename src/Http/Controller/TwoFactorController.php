@@ -19,6 +19,11 @@ class TwoFactorController extends Controller
         $this->novaGuard = config('nova.guard', 'web');
     }
 
+    public function index()
+    {
+        return inertia('NovaTwoFactor');
+    }
+
     public function registerUser()
     {
         if (auth($this->novaGuard)->user()->twoFa && auth($this->novaGuard)->user()->twoFa->confirmed == 1) {
@@ -107,7 +112,6 @@ class TwoFactorController extends Controller
             "enabled" => auth($this->novaGuard)->user()->twoFa->google2fa_enable ?? false,
             "confirmed" => auth($this->novaGuard)->user()->twoFa->confirmed ?? false
         ];
-        
     }
 
     public function getQRCodeGoogleUrl($company, $holder, $secret, $size = 200)
@@ -173,7 +177,24 @@ class TwoFactorController extends Controller
 
 
         return response()->json([
-                'message' =>  __('Incorrect OTP')
-            ], 422);
+            'message' =>  __('Incorrect OTP')
+        ], 422);
+    }
+
+    public function clear(Request $request)
+    {
+        if ($request->isMethod('get')) {
+            return inertia('NovaTwoFactor.Clear');
+        }
+
+        $request->validate([
+            'password' => 'required|current_password'
+        ]);
+
+        $user = auth($this->novaGuard)->user();
+
+        $user->twoFa()->delete();
+
+        return response()->json(['message' => __('Two FA settings has been cleared')]);
     }
 }

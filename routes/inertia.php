@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Visanduma\NovaTwoFactor\Http\Controller\TwoFactorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,6 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 |
 */
 
-Route::get('/', function (NovaRequest $request) {
-    return inertia('NovaTwoFactor');
-});
+Route::get('/', [TwoFactorController::class,'index']);
+
+Route::get('/clear', [TwoFactorController::class, 'clear']);
