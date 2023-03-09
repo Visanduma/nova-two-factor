@@ -20,7 +20,10 @@ class ToolServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadJsonTranslationsFrom(lang_path('vendor/nova-two-factor'));
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'nova-two-factor');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'nova-two-factor');
+        $this->loadMigrationsFrom([
+            __DIR__ . '/../database/migrations'
+        ]);
 
         $this->app->booted(function () {
             $this->routes();
@@ -33,11 +36,11 @@ class ToolServiceProvider extends ServiceProvider
             ], 'nova-two-factor.config');
 
             $this->publishes([
-                __DIR__.'/../database/migrations/' => database_path('migrations')
+                __DIR__ . '/../database/migrations/' => database_path('migrations')
             ], 'migrations');
 
             $this->publishes([
-                __DIR__.'/../resources/lang' => lang_path('vendor/nova-two-factor')
+                __DIR__ . '/../resources/lang' => lang_path('vendor/nova-two-factor')
             ], 'translations');
         }
 
@@ -47,7 +50,6 @@ class ToolServiceProvider extends ServiceProvider
                 Nova::translations($localeFile);
             }
         });
-
     }
 
     /**
@@ -62,12 +64,11 @@ class ToolServiceProvider extends ServiceProvider
         }
 
         Nova::router(['nova', Authenticate::class, Authorize::class], 'nova-two-factor')
-            ->group(__DIR__.'/../routes/inertia.php');
+            ->group(__DIR__ . '/../routes/inertia.php');
 
         Route::middleware(['nova', Authorize::class])
-                ->prefix('nova-vendor/nova-two-factor')
-                ->group(__DIR__.'/../routes/api.php');
-
+            ->prefix('nova-vendor/nova-two-factor')
+            ->group(__DIR__ . '/../routes/api.php');
     }
 
     /**
@@ -78,6 +79,5 @@ class ToolServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/nova-two-factor.php', 'nova-two-factor');
-
     }
 }
