@@ -52,14 +52,23 @@ class TwoFactorController extends Controller
         $user2fa->recovery = $recoveryKeyHashed;
         $user2fa->save();
 
-        $google2fa_url = $this->getQRCodeGoogleUrl(
-            config('app.name'),
-            auth($this->novaGuard)->user()->email,
-            $secretKey,
-            500
-        );
+        $url = null;
 
-        $data['google2fa_url'] = $google2fa_url;
+        if (config('nova-two-factor.use_google_qr_code_api')) {
+            $data['google2fa_url'] = $google2fa->getQRCodeInline(
+                config('app.name'),
+                auth($this->novaGuard)->user()->email,
+                $secretKey
+            );
+        } else {
+            $data['google2fa_url'] = $google2fa->getQRCodeInline(
+                config('app.name'),
+                auth($this->novaGuard)->user()->email,
+                $secretKey
+            );
+        }
+
+        $data['google2fa_url'] = $url;
 
         return $data;
     }
