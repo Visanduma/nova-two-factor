@@ -30,7 +30,7 @@
                         <br>
 
                         <LoadingButton @click="toggle">{{ __('Update Settings') }}</LoadingButton>
-                        <Link class="ml-3" as="button" href="/nova/nova-two-factor/clear"> {{ __('Clear settings') }}
+                        <Link class="ml-3" as="button" :href="resolveNovaPath('/nova-two-factor/clear')"> {{ __('Clear settings') }}
                         </Link>
 
 
@@ -163,7 +163,11 @@ export default {
             element.click();
 
             document.body.removeChild(element);
-        }
+        },
+
+        resolveNovaPath(path) {
+            return Nova.url(path);
+        },
     },
 
     computed: {
