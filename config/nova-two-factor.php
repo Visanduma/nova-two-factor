@@ -7,15 +7,13 @@
 
 return [
 
-
-    'enabled' => env('NOVA_TWO_FA_ENABLE',true),
-
+    'enabled' => env('NOVA_TWO_FA_ENABLE', true),
 
     'user_table' => 'users',
 
-
     'user_id_column' => 'id',
 
+    'encrypt_google2fa_secrets' => false,
 
     'user_model' => \App\Models\User::class,
 
@@ -32,7 +30,7 @@ return [
     ],
 
     /**
-     * reauthorize these urls before access, withing given timeout
+     * reauthorize these urls before access, within given timeout
      * you are allowed to use wildcards pattern for url matching
      **/
     'reauthorize_urls' => [
