@@ -10,7 +10,11 @@
 Laravel nova in-dashboard 2FA security feature.
 
 
-## Whats New
+## What's New
+
+### v2.2.3
+- Fixed foreign key issue (need to run migration)
+- Translation fixes
 
 ### v2.2.2
 - Clear option for current Two  FA settings
