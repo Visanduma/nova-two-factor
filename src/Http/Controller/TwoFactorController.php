@@ -53,19 +53,14 @@ class TwoFactorController extends Controller
         $user2fa->save();
 
         $url = null;
+        $company = config('app.name');
+        $email = auth($this->novaGuard)->user()->email;
 
         if (config('nova-two-factor.use_google_qr_code_api')) {
-            $data['google2fa_url'] = $google2fa->getQRCodeInline(
-                config('app.name'),
-                auth($this->novaGuard)->user()->email,
-                $secretKey
-            );
+            $url = $this->getQRCodeGoogleUrl($company, $email, $secretKey);
         } else {
-            $data['google2fa_url'] = $google2fa->getQRCodeInline(
-                config('app.name'),
-                auth($this->novaGuard)->user()->email,
-                $secretKey
-            );
+            $url = (new \PragmaRX\Google2FAQRCode\Google2FA())
+                ->getQRCodeInline($company, $email, $secretKey);
         }
 
         $data['google2fa_url'] = $url;
@@ -123,7 +118,7 @@ class TwoFactorController extends Controller
         ];
     }
 
-    public function getQRCodeGoogleUrl($company, $holder, $secret, $size = 200)
+    public function getQRCodeGoogleUrl($company, $holder, $secret, $size = 500)
     {
         $g2fa = new G2fa();
         $url = $g2fa->getQRCodeUrl($company, $holder, $secret);
