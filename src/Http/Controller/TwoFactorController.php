@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use PragmaRX\Google2FAQRCode\Google2FA;
 use PragmaRX\Google2FA\Google2FA as G2fa;
 use Visanduma\NovaTwoFactor\Models\TwoFa;
 use Visanduma\NovaTwoFactor\TwoFaAuthenticator;
@@ -57,10 +58,9 @@ class TwoFactorController extends Controller
         $email = auth($this->novaGuard)->user()->email;
 
         if (config('nova-two-factor.use_google_qr_code_api')) {
-            $url = $this->getQRCodeGoogleUrl($company, $email, $secretKey);
+            $url = $this->getQRCodeUsingGoogle($company, $email, $secretKey);
         } else {
-            $url = (new \PragmaRX\Google2FAQRCode\Google2FA())
-                ->getQRCodeInline($company, $email, $secretKey);
+            $url = (new Google2FA())->getQRCodeInline($company, $email, $secretKey, 500);
         }
 
         $data['google2fa_url'] = $url;
@@ -118,7 +118,7 @@ class TwoFactorController extends Controller
         ];
     }
 
-    public function getQRCodeGoogleUrl($company, $holder, $secret, $size = 500)
+    public function getQRCodeUsingGoogle($company, $holder, $secret, $size = 500)
     {
         $g2fa = new G2fa();
         $url = $g2fa->getQRCodeUrl($company, $holder, $secret);
