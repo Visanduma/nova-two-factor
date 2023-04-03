@@ -38,24 +38,18 @@
 
                     <div v-else class="">
                         <p>
-                            {{ __(`Two factor authentication (2FA) strengthens access security by requiring two methods
-                                                        (also referred to as factors) to verify your identity.Two factor authentication protects
-                            against phishing, social engineering and password brute force attacks and secures your logins
-                                                        from attackers exploiting weak or stolen credentials.`) }}
+                            {{ __(`Two factor authentication (2FA) strengthens access security by requiring two methods (also referred to as factors) to verify your identity.Two factor authentication protects against phishing, social engineering and password brute force attacks and secures your logins from attackers exploiting weak or stolen credentials.`) }}
                         </p>
 
                         <h3 class="tw-my-2 tw-text-xl">{{ __('Recovery codes') }}</h3>
 
                         <p class="tw-mb-3">
-                            {{ __(`Recovery code are used to access your account in the event you cannot receive two-factor
-                                                        authentication codes.`) }}
+                            {{ __(`Recovery code are used to access your account in the event you cannot receive two-factor authentication codes.`) }}
                         </p>
                         <span
-                            class="tw-bg-gray-100 tw-text-gray-800 tw-text-xs tw-font-semibold tw-mr-2 tw-px-2.5 tw-py-0.5 tw-rounded ">{{
-                                __('Step 01') }}</span>
+                            class="tw-bg-gray-100 tw-text-gray-800 tw-text-xs tw-font-semibold tw-mr-2 tw-px-2.5 tw-py-0.5 tw-rounded ">{{ __('Step 01') }}</span>
                         <p class="no-print tw-my-4 tw-text-md">
-                            {{ __(`Download, print or copy your recovery code before continuing two-factor authentication
-                                                        setup.`) }}
+                            {{ __(`Download, print or copy your recovery code before continuing two-factor authentication setup.`) }}
                         </p>
 
                         <div
