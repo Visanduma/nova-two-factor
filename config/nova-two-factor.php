@@ -15,7 +15,8 @@ return [
 
 
     'user_id_column' => 'id',
-
+    
+    'use_google_qr_code_api' => true,
 
     'user_model' => \App\Models\User::class,
 
