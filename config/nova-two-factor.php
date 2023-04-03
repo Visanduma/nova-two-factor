@@ -14,6 +14,8 @@ return [
     'user_id_column' => 'id',
 
     'encrypt_google2fa_secrets' => false,
+    
+    'use_google_qr_code_api' => true,
 
     'user_model' => \App\Models\User::class,
 

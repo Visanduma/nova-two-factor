@@ -41,7 +41,7 @@ export default {
     },
 
     mounted() {
-        this.$nextTick(() => this.$refs.otp.focus())
+        this.$nextTick(() => this.$refs.password.focus())
     },
 
     methods: {
