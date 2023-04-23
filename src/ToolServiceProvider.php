@@ -21,9 +21,6 @@ class ToolServiceProvider extends ServiceProvider
     {
         $this->loadJsonTranslationsFrom(lang_path('vendor/nova-two-factor'));
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'nova-two-factor');
-        $this->loadMigrationsFrom([
-            __DIR__ . '/../database/migrations'
-        ]);
 
         $this->app->booted(function () {
             $this->routes();
