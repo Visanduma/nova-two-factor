@@ -20,7 +20,7 @@
 
             <div class="mb-6"><label class="block font-bold mb-2" for="otp">{{ __('One time password') }}</label>
                 <input onkeyup="checkAutoSubmit(this)" autofocus
-                        class="form-control form-input form-input-bordered w-full" id="otp" type="password"
+                        class="form-control form-input form-input-bordered w-full" id="otp" type="text"
                         name="one_time_password" required="">
             </div>
 
@@ -37,7 +37,7 @@
             <div class="flex mt-3 mb-6">
 
                 <div class="ml-auto">
-                    {{ __('Not working ?') }} <a href="{{ route('nova-two-factor.recover') }}">{{ __('Use recover code') }}</a>
+                    {{ __('Not working?') }} <a href="{{ route('nova-two-factor.recover') }}">{{ __('Use recovery code') }}</a>
                     <br>
                 </div>
             </div>
