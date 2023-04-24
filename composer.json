@@ -10,8 +10,7 @@
         "php": "^8.0",
         "bacon/bacon-qr-code": "^2.0",
         "pragmarx/google2fa-laravel": "^2.0",
-        "laravel/nova": "^4.0",
-       "doctrine/dbal": "^3.6"
+        "laravel/nova": "^4.0"
     },
     "autoload": {
         "psr-4": {
