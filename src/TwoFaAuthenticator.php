@@ -5,9 +5,13 @@ namespace Visanduma\NovaTwoFactor;
 
 use Exception;
 use PragmaRX\Google2FALaravel\Support\Authenticator;
+use Visanduma\NovaTwoFactor\Helpers\NovaUser;
 
 class TwoFaAuthenticator extends Authenticator
 {
+
+    use NovaUser;
+
     protected function canPassWithoutCheckingOTP()
     {
         return
@@ -30,8 +34,13 @@ class TwoFaAuthenticator extends Authenticator
         return $secret;
     }
 
-    public function isValidOtp():bool
+    public function isValidOtp(): bool
     {
         return $this->checkOTP() == 'valid';
+    }
+
+    protected function getUser()
+    {
+        return $this->novaUser();
     }
 }

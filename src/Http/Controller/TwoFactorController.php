@@ -8,17 +8,13 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use PragmaRX\Google2FAQRCode\Google2FA;
 use PragmaRX\Google2FA\Google2FA as G2fa;
+use Visanduma\NovaTwoFactor\Helpers\NovaUser;
 use Visanduma\NovaTwoFactor\Models\TwoFa;
 use Visanduma\NovaTwoFactor\TwoFaAuthenticator;
 
 class TwoFactorController extends Controller
 {
-    private $novaGuard;
-
-    public function __construct()
-    {
-        $this->novaGuard = config('nova.guard', 'web');
-    }
+    use  NovaUser;
 
     public function index()
     {
@@ -27,7 +23,7 @@ class TwoFactorController extends Controller
 
     public function registerUser()
     {
-        if (auth($this->novaGuard)->user()->twoFa && auth($this->novaGuard)->user()->twoFa->confirmed == 1) {
+        if ($this->novaUser()->twoFa && $this->novaUser()->twoFa->confirmed == 1) {
             return response()->json([
                 'message' => __('Already verified !')
             ]);
@@ -46,16 +42,16 @@ class TwoFactorController extends Controller
 
 
         $userTwoFa = new TwoFa();
-        $userTwoFa::where('user_id', auth($this->novaGuard)->user()->id)->delete();
+        $userTwoFa::where('user_id', $this->novaUser()->id)->delete();
         $user2fa = new $userTwoFa();
-        $user2fa->user_id = auth($this->novaGuard)->user()->id;
+        $user2fa->user_id = $this->novaUser()->id;
         $user2fa->google2fa_secret = $secretKey;
         $user2fa->recovery = $recoveryKeyHashed;
         $user2fa->save();
 
         $url = null;
         $company = config('app.name');
-        $email = auth($this->novaGuard)->user()->email;
+        $email = $this->novaUser()->email;
 
         if (config('nova-two-factor.use_google_qr_code_api')) {
             $url = $this->getQRCodeUsingGoogle($company, $email, $secretKey);
@@ -78,7 +74,7 @@ class TwoFactorController extends Controller
         if ($authenticator->isAuthenticated()) {
             // otp auth success!
 
-            auth($this->novaGuard)->user()->twoFa()->update([
+            $this->novaUser()->twoFa()->update([
                 'confirmed' => true,
                 'google2fa_enable' => true
             ]);
@@ -98,7 +94,7 @@ class TwoFactorController extends Controller
     {
         $status = $request->get('status', false);
 
-        auth($this->novaGuard)->user()->twoFa()->update([
+        $this->novaUser()->twoFa()->update([
             'google2fa_enable' => $status
         ]);
 
@@ -109,12 +105,10 @@ class TwoFactorController extends Controller
 
     public function getStatus()
     {
-        $user = auth($this->novaGuard)->user();
-
         return [
-            "registered" => !empty($user->twoFa),
-            "enabled" => auth($this->novaGuard)->user()->twoFa->google2fa_enable ?? false,
-            "confirmed" => auth($this->novaGuard)->user()->twoFa->confirmed ?? false
+            "registered" => !empty($this->novaUser()->twoFa),
+            "enabled" => $this->novaUser()->twoFa->google2fa_enable ?? false,
+            "confirmed" => $this->novaUser()->twoFa->confirmed ?? false
         ];
     }
 
@@ -157,9 +151,9 @@ class TwoFactorController extends Controller
             return view('nova-two-factor::recover');
         }
 
-        if (Hash::check($request->get('recovery_code'), auth($this->novaGuard)->user()->twoFa->recovery)) {
+        if (Hash::check($request->get('recovery_code'), $this->novaUser()->twoFa->recovery)) {
             // reset 2fa
-            auth($this->novaGuard)->user()->twoFa()->delete();
+            $this->novaUser()->twoFa()->delete();
             return redirect()->to(config('nova.path'));
         } else {
             return back()->withErrors([__('Incorrect recovery code !')]);
@@ -195,9 +189,7 @@ class TwoFactorController extends Controller
             'password' => 'required|current_password'
         ]);
 
-        $user = auth($this->novaGuard)->user();
-
-        $user->twoFa()->delete();
+        $this->novaUser()->twoFa()->delete();
 
         return response()->json(['message' => __('Two FA settings has been cleared')]);
     }
