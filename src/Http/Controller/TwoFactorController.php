@@ -186,7 +186,7 @@ class TwoFactorController extends Controller
         }
 
         $request->validate([
-            'password' => 'required|current_password'
+            'password' => 'required|current_password:' . config('nova.guard')
         ]);
 
         $this->novaUser()->twoFa()->delete();
