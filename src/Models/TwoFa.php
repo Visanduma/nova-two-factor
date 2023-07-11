@@ -16,6 +16,11 @@ class TwoFa extends Model
         'google2fa_enable' => 'boolean'
     ];
 
+    public function getConnectionName()
+    {
+        return config('nova-two-factor.connection_name') ?? config('database.default');
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(config('nova-two-factor.user_model'));
