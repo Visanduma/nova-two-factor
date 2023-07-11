@@ -37,7 +37,7 @@
             <div class="flex mt-3 mb-6">
 
                 <div class="ml-auto">
-                    {{ __('Not working?') }} <a href="{{ route('nova-two-factor.recover') }}">{{ __('Use recovery code') }}</a>
+                    {{ __('Not working ?') }} <a href="{{ route('nova-two-factor.recover') }}">{{ __('Use recovery code') }}</a>
                     <br>
                 </div>
             </div>
