@@ -2,7 +2,6 @@
 
 namespace Visanduma\NovaTwoFactor\Http\Controller;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -12,7 +11,7 @@ use Visanduma\NovaTwoFactor\Helpers\NovaUser;
 use Visanduma\NovaTwoFactor\Models\TwoFa;
 use Visanduma\NovaTwoFactor\TwoFaAuthenticator;
 
-class TwoFactorController extends Controller
+class TwoFactorController
 {
     use  NovaUser;
 
