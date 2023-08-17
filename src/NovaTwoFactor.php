@@ -16,8 +16,8 @@ class NovaTwoFactor extends Tool
      */
     public function boot()
     {
-        Nova::script('nova-two-factor', __DIR__.'/../dist/js/tool.js');
-        Nova::style('nova-two-factor', __DIR__.'/../dist/css/tool.css');
+        Nova::script('nova-two-factor', __DIR__ . '/../dist/js/tool.js');
+        Nova::style('nova-two-factor', __DIR__ . '/../dist/css/tool.css');
     }
 
     /**
@@ -34,12 +34,12 @@ class NovaTwoFactor extends Tool
         }
     }
 
-    public static function promptEnabled($request)
+    public static function promptEnabled(Request $request)
     {
 
         $timeout = config('nova-two-factor.reauthorize_timeout', 5);
 
-        $promptFor = config('nova-two-factor.reauthorize_urls',[]);
+        $promptFor = config('nova-two-factor.reauthorize_urls', []);
 
         $hasUrl = $request->is($promptFor);
 
@@ -55,8 +55,8 @@ class NovaTwoFactor extends Tool
 
     public static function prompt()
     {
-        redirect()->setIntendedUrl(request()->url());
-
-        return inertia('NovaTwoFactor.Prompt');
+        return inertia('NovaTwoFactor.Prompt', [
+            'referer' => request()->url()
+        ]);
     }
 }

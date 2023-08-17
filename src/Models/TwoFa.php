@@ -11,6 +11,8 @@ class TwoFa extends Model
 {
     protected $table = 'nova_twofa';
 
+    protected $fillable = ['recovery', 'google2fa_secret'];
+
     protected $casts = [
         'confirmed' => 'boolean',
         'google2fa_enable' => 'boolean'

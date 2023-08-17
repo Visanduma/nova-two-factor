@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Visanduma\NovaTwoFactor\Http\Controller\TwoFactorController;
 
 /*
@@ -15,6 +14,6 @@ use Visanduma\NovaTwoFactor\Http\Controller\TwoFactorController;
 |
 */
 
-Route::get('/', [TwoFactorController::class,'index']);
-
+Route::get('/', [TwoFactorController::class, 'register']);
+Route::get('/settings', [TwoFactorController::class, 'settings']);
 Route::get('/clear', [TwoFactorController::class, 'clear']);
