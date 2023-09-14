@@ -41,6 +41,10 @@ Reauthorize any route using 2FA prompt
 
 ![screenshot](/resources/img/sc-4.png)
 
+Install the package
+
+`` composer require visanduma/nova-two-factor ``
+
 
 1. Pubish config & migration
 
