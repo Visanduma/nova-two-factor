@@ -150,7 +150,7 @@ class TwoFactorController
         $authenticator = app(TwoFaAuthenticator::class)->boot(request());
 
         if ($authenticator->isAuthenticated()) {
-            session()->put('2fa.logged_at', now());
+            session()->put('2fa.prompt_at', now());
             session()->put('2fa.prompt', false);
 
 
