@@ -9,6 +9,7 @@ use PragmaRX\Google2FAQRCode\Google2FA;
 use PragmaRX\Google2FA\Google2FA as G2fa;
 use Visanduma\NovaTwoFactor\Helpers\NovaUser;
 use Visanduma\NovaTwoFactor\TwoFaAuthenticator;
+use Illuminate\Support\Facades\RateLimiter;
 
 class TwoFactorController
 {
@@ -147,6 +148,17 @@ class TwoFactorController
 
     public function authenticate(Request $request)
     {
+        if (config('nova-two-factor.enable_max_attempts')) {
+            $throttleKey = 'nova-two-factor:authenticate:'.$this->novaUser()->id;
+            $attempts = config('nova-two-factor.max_attempts_per_minute');
+
+            if (RateLimiter::tooManyAttempts($throttleKey, $attempts)) {
+                return back()->withErrors([__('Too many attempts!')]);
+            }
+
+            RateLimiter::hit($throttleKey);
+        }
+
         $authenticator = app(TwoFaAuthenticator::class)->boot(request());
 
         if ($authenticator->isAuthenticated()) {
