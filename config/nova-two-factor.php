@@ -47,4 +47,8 @@ return [
     /* timeout in minutes */
     'reauthorize_timeout' => 5,
 
+    'enable_max_attempts' => false,
+
+    'max_attempts_per_minute' => 3,
+
 ];
