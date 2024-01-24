@@ -45,11 +45,6 @@ class TwoFa
             return $next($request);
         }
 
-        // re prompt for OTP
-        if(NovaTwoFactor::promptEnabled($request)){
-            return NovaTwoFactor::prompt();
-        }
-
         // allow access if already authenticated
         if ($authenticator->isAuthenticated()) {
             // return inertia('NovaTwoFactor.Prompt');
