@@ -16,3 +16,4 @@ Homestead.yaml
 Homestead.json
 /.vagrant
 .DS_Store
+.idea

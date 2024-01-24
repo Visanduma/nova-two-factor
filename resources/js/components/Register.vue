@@ -63,12 +63,12 @@
               class="form-control form-input form-input-bordered tw-my-4"
             />
             <br />
-            <LoadingButton
+            <Button
               :loading="loading"
               :disabled="loading"
               @click="confirmOtp"
               class="btn btn-default btn-primary"
-              >{{ __("Activate 2FA") }}</LoadingButton
+              >{{ __("Activate 2FA") }}</Button
             >
           </div>
         </div>
@@ -89,8 +89,13 @@
 </template>
 
 <script>
+import {Button} from 'laravel-nova-ui'
+
 export default {
   props: ["status", "qr_url", "recovery"],
+  components: {
+    Button,
+  },
   data() {
     return {
       form: {},

@@ -17,11 +17,11 @@
                         </HelpText>
                     </div>
 
-                    <LoadingButton class="flex justify-center" type="submit">
+                     <Button class="flex justify-center" type="submit">
                         <span>
                             {{ __('Clear') }}
                         </span>
-                    </LoadingButton>
+                    </Button>
 
                 </form>
             </div>
@@ -31,7 +31,13 @@
 </template>
 
 <script>
+import {Button} from 'laravel-nova-ui'
+
 export default {
+    components: {
+        Button,
+    },
+
     data() {
         return {
             form: Nova.form({

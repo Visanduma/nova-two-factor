@@ -43,9 +43,9 @@
 
             <br />
 
-            <LoadingButton @click="toggle">{{
+            <Button @click="toggle">{{
               __("Update Settings")
-            }}</LoadingButton>
+            }}</Button>
             <Link
               class="ml-3"
               as="button"
@@ -61,8 +61,13 @@
 </template>
 
 <script>
+import {Button} from 'laravel-nova-ui'
+
 export default {
   props: ["enabled"],
+  components: {
+    Button,
+  },
   data() {
     return {
       loading: false,

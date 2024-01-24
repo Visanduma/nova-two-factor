@@ -8,7 +8,7 @@
     "hot": "mix watch --hot",
     "prod": "npm run production",
     "production": "mix --production",
-    "nova:install": "npm --prefix='../../vendor/laravel/nova' ci"
+    "nova:install": "npm --prefix='./vendor/laravel/nova' ci"
   },
   "devDependencies": {
     "@vue/compiler-sfc": "^3.2.22",
@@ -19,5 +19,8 @@
     "sass-loader": "^10.3.1",
     "tailwindcss": "^3.1.8",
     "vue-loader": "^16.8.3"
+  },
+  "dependencies": {
+    "laravel-nova-ui": "^0.4.10"
   }
 }

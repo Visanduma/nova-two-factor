@@ -17,19 +17,24 @@
                 </HelpText>
             </div>
 
-            <LoadingButton class="w-full flex justify-center" type="submit">
+            <Button class="w-full flex justify-center" type="submit">
                 <span>
                     {{ __('Authenticate') }}
                 </span>
-            </LoadingButton>
+            </Button>
 
         </form>
     </div>
 </template>
 
 <script>
+import {Button} from 'laravel-nova-ui'
+
 export default {
     props: ['referer'],
+    components: {
+        Button,
+    },
     data() {
         return {
             otp: '',
