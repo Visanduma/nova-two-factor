@@ -5,32 +5,31 @@ namespace Visanduma\NovaTwoFactor\Http\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use PragmaRX\Google2FAQRCode\Google2FA;
 use PragmaRX\Google2FA\Google2FA as G2fa;
+use PragmaRX\Google2FAQRCode\Google2FA;
 use Visanduma\NovaTwoFactor\Helpers\NovaUser;
 use Visanduma\NovaTwoFactor\TwoFaAuthenticator;
 use Illuminate\Support\Facades\RateLimiter;
 
 class TwoFactorController
 {
-    use  NovaUser;
+    use NovaUser;
 
     public function register()
     {
-
         if ($this->novaUser()->twoFaConfirmed()) {
             return $this->settings();
         }
 
         return inertia('NovaTwoFactor.Register', [
-            ...$this->registerUser()
+            ...$this->registerUser(),
         ]);
     }
 
     public function settings()
     {
         return inertia('NovaTwoFactor.Settings', [
-            'enabled' => $this->novaUser()->twoFaEnabled()
+            'enabled' => $this->novaUser()->twoFaEnabled(),
         ]);
     }
 
@@ -38,7 +37,8 @@ class TwoFactorController
     {
         $recoveryKey = strtoupper(Str::random(16));
         $recoveryKey = str_split($recoveryKey, 4);
-        $recoveryKey = implode("-", $recoveryKey);
+        $recoveryKey = implode('-', $recoveryKey);
+
         return $recoveryKey;
     }
 
@@ -53,13 +53,13 @@ class TwoFactorController
         if ($this->novaUser()->twofa) {
 
             $this->novaUser()->twofa->update([
-                'recovery' => $recoveryKeyHashed
+                'recovery' => $recoveryKeyHashed,
             ]);
         } else {
 
             $this->novaUser()->twofa()->create([
                 'google2fa_secret' => $secretKey,
-                'recovery' => $recoveryKeyHashed
+                'recovery' => $recoveryKeyHashed,
             ]);
         }
 
@@ -78,7 +78,7 @@ class TwoFactorController
 
         $data = [
             'qr_url' => $url,
-            'recovery' => $recovery
+            'recovery' => $recovery,
         ];
 
         return $data;
@@ -87,7 +87,7 @@ class TwoFactorController
     public function verifyOtp(Request $request)
     {
         $request->validate([
-            'otp' => 'required'
+            'otp' => 'required',
         ]);
 
         $otp = request()->get('otp');
@@ -100,18 +100,18 @@ class TwoFactorController
 
             $this->novaUser()->twoFa()->update([
                 'confirmed' => true,
-                'google2fa_enable' => true
+                'google2fa_enable' => true,
             ]);
 
             return response()->json([
                 'message' => __('2FA security successfully activated !'),
-                'url' => '/nova-two-factor/settings'
+                'url' => '/nova-two-factor/settings',
             ]);
         }
 
         // auth fail
         return response()->json([
-            'message' => __('Invalid OTP !. Please try again')
+            'message' => __('Invalid OTP !. Please try again'),
         ], 422);
     }
 
@@ -120,11 +120,11 @@ class TwoFactorController
         $status = $request->get('status', false);
 
         $this->novaUser()->twoFa()->update([
-            'google2fa_enable' => $status
+            'google2fa_enable' => $status,
         ]);
 
         return response()->json([
-            'message' => $status ? __('2FA feature enabled!') : __('2FA feature disabled !')
+            'message' => $status ? __('2FA feature enabled!') : __('2FA feature disabled !'),
         ]);
     }
 
@@ -133,14 +133,14 @@ class TwoFactorController
         $g2fa = new G2fa();
         $url = $g2fa->getQRCodeUrl($company, $holder, $secret);
 
-        return self::generateGoogleQRCodeUrl('https://chart.googleapis.com/', 'chart', 'chs=' . $size . 'x' . $size . '&chld=M|0&cht=qr&chl=', $url);
+        return self::generateGoogleQRCodeUrl('https://chart.googleapis.com/', 'chart', 'chs='.$size.'x'.$size.'&chld=M|0&cht=qr&chl=', $url);
     }
 
     public static function generateGoogleQRCodeUrl($domain, $page, $queryParameters, $qrCodeUrl)
     {
-        $url = $domain .
-            rawurlencode($page) .
-            '?' . $queryParameters .
+        $url = $domain.
+            rawurlencode($page).
+            '?'.$queryParameters.
             urlencode($qrCodeUrl);
 
         return $url;
@@ -165,7 +165,6 @@ class TwoFactorController
             session()->put('2fa.logged_at', now());
             session()->put('2fa.prompt', false);
 
-
             return redirect()->intended(config('nova.path'));
         }
 
@@ -181,6 +180,7 @@ class TwoFactorController
         if (Hash::check($request->get('recovery_code'), $this->novaUser()->twoFa->recovery)) {
             // reset 2fa
             $this->novaUser()->twoFa()->delete();
+
             return redirect()->to(config('nova.path'));
         } else {
             return back()->withErrors([__('Incorrect recovery code !')]);
@@ -200,9 +200,8 @@ class TwoFactorController
             ]);
         }
 
-
         return response()->json([
-            'message' =>  __('Incorrect OTP')
+            'message' => __('Incorrect OTP'),
         ], 422);
     }
 
@@ -213,7 +212,7 @@ class TwoFactorController
         }
 
         $request->validate([
-            'password' => 'required|current_password:' . config('nova.guard')
+            'password' => 'required|current_password:'.config('nova.guard'),
         ]);
 
         app(TwoFaAuthenticator::class)->logout();
