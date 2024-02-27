@@ -43,9 +43,9 @@
 
             <br />
 
-            <LoadingButton @click="toggle">{{
+            <DefaultButton @click="toggle">{{
               __("Update Settings")
-            }}</LoadingButton>
+            }}</DefaultButton>
             <Link
               class="ml-3"
               as="button"

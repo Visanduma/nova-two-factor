@@ -17,11 +17,11 @@
                 </HelpText>
             </div>
 
-            <LoadingButton class="w-full flex justify-center" type="submit">
+            <DefaultButton class="w-full flex justify-center" type="submit">
                 <span>
                     {{ __('Authenticate') }}
                 </span>
-            </LoadingButton>
+            </DefaultButton>
 
         </form>
     </div>

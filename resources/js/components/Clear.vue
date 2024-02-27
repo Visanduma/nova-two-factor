@@ -17,11 +17,11 @@
                         </HelpText>
                     </div>
 
-                    <LoadingButton class="flex justify-center" type="submit">
+                    <DefaultButton class="flex justify-center" type="submit">
                         <span>
                             {{ __('Clear') }}
                         </span>
-                    </LoadingButton>
+                    </DefaultButton>
 
                 </form>
             </div>
