@@ -14,9 +14,7 @@
 
           <p class="tw-mb-3">
             {{
-              __(
-                `Recovery code are used to access your account in the event you cannot receive two-factor authentication codes.`
-              )
+              __(`Recovery code are used to access your account in the event you cannot receive two-factor authentication codes.`)
             }}
           </p>
           <span
@@ -25,9 +23,7 @@
           >
           <p class="no-print tw-my-4 tw-text-md">
             {{
-              __(
-                `Download, print or copy your recovery code before continuing two-factor authentication setup.`
-              )
+              __(`Download, print or copy your recovery code before continuing two-factor authentication setup.`)
             }}
           </p>
 
@@ -50,9 +46,7 @@
 
           <div class="tw-my-4 tw-text-md">
             {{
-              __(
-                "Scan this QR code using Google authenticator to setup & enter OTP to activate 2FA"
-              )
+              __("Scan this QR code using Google authenticator to setup & enter OTP to activate 2FA")
             }}
             <br />
             <input
@@ -63,12 +57,12 @@
               class="form-control form-input form-input-bordered tw-my-4"
             />
             <br />
-            <LoadingButton
+            <DefaultButton
               :loading="loading"
               :disabled="loading"
               @click="confirmOtp"
               class="btn btn-default btn-primary"
-              >{{ __("Activate 2FA") }}</LoadingButton
+              >{{ __("Activate 2FA") }}</DefaultButton
             >
           </div>
         </div>
