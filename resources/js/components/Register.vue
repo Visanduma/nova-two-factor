@@ -58,7 +58,6 @@
             />
             <br />
             <DefaultButton
-              :loading="loading"
               :disabled="loading"
               @click="confirmOtp"
               class="btn btn-default btn-primary"
