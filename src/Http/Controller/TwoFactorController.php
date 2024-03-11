@@ -4,12 +4,13 @@ namespace Visanduma\NovaTwoFactor\Http\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use PragmaRX\Google2FA\Google2FA as G2fa;
 use PragmaRX\Google2FAQRCode\Google2FA;
 use Visanduma\NovaTwoFactor\Helpers\NovaUser;
+use Visanduma\NovaTwoFactor\NovaTwoFactor;
 use Visanduma\NovaTwoFactor\TwoFaAuthenticator;
-use Illuminate\Support\Facades\RateLimiter;
 
 class TwoFactorController
 {
@@ -69,16 +70,19 @@ class TwoFactorController
         $company = config('app.name');
         $email = $this->novaUser()->email;
         $secretKey = $this->novaUser()->twofa->google2fa_secret;
+        $isSvg = false;
 
         if (config('nova-two-factor.use_google_qr_code_api')) {
             $url = $this->getQRCodeUsingGoogle($company, $email, $secretKey);
         } else {
-            $url = (new Google2FA())->getQRCodeInline($company, $email, $secretKey, 500);
+            $url = (new Google2FA())->getQRCodeInline($company, $email, $secretKey, 250);
+            $isSvg = true;
         }
 
         $data = [
             'qr_url' => $url,
             'recovery' => $recovery,
+            'svg' => $isSvg,
         ];
 
         return $data;
@@ -193,7 +197,7 @@ class TwoFactorController
 
         if ($authenticator->isValidOtp()) {
 
-            session()->put('2fa.prompt_at', now());
+            NovaTwoFactor::setLastPromptTime();
 
             return response()->json([
                 // 'goto' => session()->get('url.intended')
