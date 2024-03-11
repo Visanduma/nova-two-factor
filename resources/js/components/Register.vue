@@ -6,7 +6,9 @@
         <div class="">
           <p>
             {{
-              __(`Two factor authentication (2FA) strengthens access security by requiring two methods (also referred to as factors) to verify your identity. Two factor authentication protects against phishing, social engineering and password brute force attacks and secures your logins from attackers exploiting weak or stolen credentials.`)
+              __(
+                `Two factor authentication (2FA) strengthens access security by requiring two methods (also referred to as factors) to verify your identity. Two factor authentication protects against phishing, social engineering and password brute force attacks and secures your logins from attackers exploiting weak or stolen credentials.`
+              )
             }}
           </p>
 
@@ -14,7 +16,9 @@
 
           <p class="tw-mb-3">
             {{
-              __(`Recovery code are used to access your account in the event you cannot receive two-factor authentication codes.`)
+              __(
+                `Recovery code are used to access your account in the event you cannot receive two-factor authentication codes.`
+              )
             }}
           </p>
           <span
@@ -23,7 +27,9 @@
           >
           <p class="no-print tw-my-4 tw-text-md">
             {{
-              __(`Download, print or copy your recovery code before continuing two-factor authentication setup.`)
+              __(
+                `Download, print or copy your recovery code before continuing two-factor authentication setup.`
+              )
             }}
           </p>
 
@@ -46,7 +52,9 @@
 
           <div class="tw-my-4 tw-text-md">
             {{
-              __("Scan this QR code using Google authenticator to setup & enter OTP to activate 2FA")
+              __(
+                "Scan this QR code using Google authenticator to setup & enter OTP to activate 2FA"
+              )
             }}
             <br />
             <input
@@ -68,12 +76,14 @@
         <div class="tw-flex tw-justify-center tw-items-center">
           <div>
             <img
+              v-if="!svg"
               width="250"
               height="250"
               :src="qr_url"
               alt="qr_code"
               class="tw-shadow-md tw-p-5 tw-rounded-lg"
             />
+            <div v-else v-html="qr_url"></div>
           </div>
         </div>
       </div>
@@ -83,7 +93,7 @@
 
 <script>
 export default {
-  props: ["status", "qr_url", "recovery"],
+  props: ["status", "qr_url", "recovery", "svg"],
   data() {
     return {
       form: {},
