@@ -16,8 +16,8 @@ class NovaTwoFactor extends Tool
      */
     public function boot()
     {
-        Nova::script('nova-two-factor', __DIR__ . '/../dist/js/tool.js');
-        Nova::style('nova-two-factor', __DIR__ . '/../dist/css/tool.css');
+        Nova::script('nova-two-factor', __DIR__.'/../dist/js/tool.js');
+        Nova::style('nova-two-factor', __DIR__.'/../dist/css/tool.css');
     }
 
     /**
@@ -39,24 +39,38 @@ class NovaTwoFactor extends Tool
 
         $timeout = config('nova-two-factor.reauthorize_timeout', 5);
 
-        $promptFor = config('nova-two-factor.reauthorize_urls', []);
+        $promptFor = array_map(fn ($el) => trim(Nova::url($el), '/'), config('nova-two-factor.reauthorize_urls', []));
 
         $hasUrl = $request->is($promptFor);
 
-        $lastAttempt = session()->get('2fa.prompt_at', now()->subMinutes($timeout + 1));
+        $lastAttempt = self::getLastPromptTime();
 
-        if ($lastAttempt->diffInMinutes(now()) > $timeout && $hasUrl) {
+        // dd($lastAttempt->toTimeString(), $lastAttempt->diffInMinutes(now()), $timeout);
+
+        if ($lastAttempt->diffInMinutes(now()) >= $timeout && $hasUrl) {
+
             return true;
         }
 
         return false;
     }
 
-
     public static function prompt()
     {
         return inertia('NovaTwoFactor.Prompt', [
-            'referer' => request()->url()
+            'referer' => request()->url(),
         ]);
+    }
+
+    public static function setLastPromptTime(): void
+    {
+        session()->put('2fa.prompt_at', now());
+    }
+
+    public static function getLastPromptTime()
+    {
+        $timeout = config('nova-two-factor.reauthorize_timeout', 5);
+
+        return session()->get('2fa.prompt_at', now()->subMinutes($timeout + 5));
     }
 }
