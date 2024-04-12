@@ -51,4 +51,12 @@ return [
 
     'max_attempts_per_minute' => 3,
 
+    /**
+     * Set Bacon ImageBackEndInterface
+     * Values can be :
+     * - \BaconQrCode\Renderer\Image\SvgImageBackEnd::class
+     * - \BaconQrCode\Renderer\Image\ImagickImageBackEnd::class
+     * - \BaconQrCode\Renderer\Image\EpsImageBackEnd::class (not yep supported as display)
+     */
+    'bacon_qrcode_renderer' => \BaconQrCode\Renderer\Image\SvgImageBackEnd::class,
 ];

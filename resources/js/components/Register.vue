@@ -83,7 +83,7 @@
               alt="qr_code"
               class="tw-shadow-md tw-p-5 tw-rounded-lg"
             />
-            <div v-else v-html="qr_url"></div>
+            <div v-else v-html="qr_url" class="tw-shadow-md tw-p-5 tw-rounded-lg"></div>
           </div>
         </div>
       </div>

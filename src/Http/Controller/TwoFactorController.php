@@ -2,11 +2,14 @@
 
 namespace Visanduma\NovaTwoFactor\Http\Controller;
 
+use BaconQrCode\Renderer\Image\ImageBackEndInterface;
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use PragmaRX\Google2FA\Google2FA as G2fa;
+use PragmaRX\Google2FALaravel\Support\Constants;
 use PragmaRX\Google2FAQRCode\Google2FA;
 use Visanduma\NovaTwoFactor\Helpers\NovaUser;
 use Visanduma\NovaTwoFactor\NovaTwoFactor;
@@ -66,23 +69,21 @@ class TwoFactorController
 
         $this->novaUser()->refresh();
 
-        $url = null;
         $company = config('app.name');
         $email = $this->novaUser()->email;
         $secretKey = $this->novaUser()->twofa->google2fa_secret;
-        $isSvg = false;
 
         if (config('nova-two-factor.use_google_qr_code_api')) {
             $url = $this->getQRCodeUsingGoogle($company, $email, $secretKey);
         } else {
-            $url = (new Google2FA())->getQRCodeInline($company, $email, $secretKey, 250);
-            $isSvg = true;
+            $url = (new Google2FA(imageBackEnd: $this->getRenderer()))
+                ->getQRCodeInline($company, $email, $secretKey, 250);
         }
 
         $data = [
             'qr_url' => $url,
             'recovery' => $recovery,
-            'svg' => $isSvg,
+            'svg' => $this->displayAsSg(),
         ];
 
         return $data;
@@ -224,5 +225,20 @@ class TwoFactorController
         $this->novaUser()->twoFa()->delete();
 
         return response()->json(['message' => __('Two FA settings has been cleared')]);
+    }
+
+    private function getRenderer(): ?ImageBackEndInterface{
+        $renderer = config('nova-two-factor.bacon_qrcode_renderer');
+        if($renderer){
+            return new $renderer();
+        }
+        return null;
+    }
+
+    private function displayAsSg(): bool{
+        return match(config('nova-two-factor.bacon_qrcode_renderer')){
+            SvgImageBackEnd::class => true,
+            default => false
+        };
     }
 }
