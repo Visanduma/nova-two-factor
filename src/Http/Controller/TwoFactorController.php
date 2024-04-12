@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use PragmaRX\Google2FA\Google2FA as G2fa;
-use PragmaRX\Google2FALaravel\Support\Constants;
 use PragmaRX\Google2FAQRCode\Google2FA;
 use Visanduma\NovaTwoFactor\Helpers\NovaUser;
 use Visanduma\NovaTwoFactor\NovaTwoFactor;
@@ -138,23 +137,28 @@ class TwoFactorController
         $g2fa = new G2fa();
         $url = $g2fa->getQRCodeUrl($company, $holder, $secret);
 
-        return self::generateGoogleQRCodeUrl('https://chart.googleapis.com/', 'chart', 'chs='.$size.'x'.$size.'&chld=M|0&cht=qr&chl=', $url);
+        return self::generateGoogleQRCodeUrl(
+            'https://chart.googleapis.com/',
+            'chart',
+            'chs=' . $size . 'x' . $size . '&chld=M|0&cht=qr&chl=',
+            $url
+        );
     }
 
     public static function generateGoogleQRCodeUrl($domain, $page, $queryParameters, $qrCodeUrl)
     {
-        $url = $domain.
-            rawurlencode($page).
-            '?'.$queryParameters.
-            urlencode($qrCodeUrl);
-
-        return $url;
+        return sprintf('%s%s?%s%s',
+            $domain,
+            rawurlencode($page),
+            $queryParameters,
+            urlencode($qrCodeUrl)
+        );
     }
 
     public function authenticate(Request $request)
     {
         if (config('nova-two-factor.enable_max_attempts')) {
-            $throttleKey = 'nova-two-factor:authenticate:'.$this->novaUser()->id;
+            $throttleKey = 'nova-two-factor:authenticate:' . $this->novaUser()->id;
             $attempts = config('nova-two-factor.max_attempts_per_minute');
 
             if (RateLimiter::tooManyAttempts($throttleKey, $attempts)) {
@@ -217,7 +221,7 @@ class TwoFactorController
         }
 
         $request->validate([
-            'password' => 'required|current_password:'.config('nova.guard'),
+            'password' => 'required|current_password:' . config('nova.guard'),
         ]);
 
         app(TwoFaAuthenticator::class)->logout();
@@ -227,16 +231,19 @@ class TwoFactorController
         return response()->json(['message' => __('Two FA settings has been cleared')]);
     }
 
-    private function getRenderer(): ?ImageBackEndInterface{
+    private function getRenderer(): ?ImageBackEndInterface
+    {
         $renderer = config('nova-two-factor.bacon_qrcode_renderer');
-        if($renderer){
+        if ($renderer) {
             return new $renderer();
         }
+
         return null;
     }
 
-    private function displayAsSg(): bool{
-        return match(config('nova-two-factor.bacon_qrcode_renderer')){
+    private function displayAsSg(): bool
+    {
+        return match (config('nova-two-factor.bacon_qrcode_renderer')) {
             SvgImageBackEnd::class => true,
             default => false
         };
