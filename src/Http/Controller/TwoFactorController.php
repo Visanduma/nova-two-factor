@@ -72,8 +72,9 @@ class TwoFactorController
         $secretKey = $this->novaUser()->twofa->google2fa_secret;
         $isSvg = false;
 
-        if (config('nova-two-factor.use_google_qr_code_api')) {
-            $url = $this->getQRCodeUsingGoogle($company, $email, $secretKey);
+        if (! config('nova-two-factor.use_offline_qr')) {
+            $url = $this->getOnlineQrCode($company, $email, $secretKey);
+
         } else {
             $url = (new Google2FA())->getQRCodeInline($company, $email, $secretKey, 250);
             $isSvg = true;
@@ -132,22 +133,13 @@ class TwoFactorController
         ]);
     }
 
-    public function getQRCodeUsingGoogle($company, $holder, $secret, $size = 500)
+    public function getOnlineQrCode($company, $holder, $secret, $size = 500)
     {
-        $g2fa = new G2fa();
-        $url = $g2fa->getQRCodeUrl($company, $holder, $secret);
 
-        return self::generateGoogleQRCodeUrl('https://chart.googleapis.com/', 'chart', 'chs='.$size.'x'.$size.'&chld=M|0&cht=qr&chl=', $url);
-    }
+        $url = (new Google2FA())->getQRCodeUrl($company, $holder, $secret);
 
-    public static function generateGoogleQRCodeUrl($domain, $page, $queryParameters, $qrCodeUrl)
-    {
-        $url = $domain.
-            rawurlencode($page).
-            '?'.$queryParameters.
-            urlencode($qrCodeUrl);
+        return "https://api.qrserver.com/v1/create-qr-code/?size={$size}x{$size}&data={$url}";
 
-        return $url;
     }
 
     public function authenticate(Request $request)
