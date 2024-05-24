@@ -77,7 +77,6 @@ class TwoFactorController
 
         } else {
             $url = (new Google2FA())->getQRCodeInline($company, $email, $secretKey, 250);
-            $isSvg = true;
         }
 
         $data = [
