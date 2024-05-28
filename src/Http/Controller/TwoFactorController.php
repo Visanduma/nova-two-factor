@@ -2,12 +2,14 @@
 
 namespace Visanduma\NovaTwoFactor\Http\Controller;
 
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use PragmaRX\Google2FA\Google2FA as G2fa;
 use PragmaRX\Google2FAQRCode\Google2FA;
+use PragmaRX\Google2FAQRCode\QRCode\Bacon;
 use Visanduma\NovaTwoFactor\Helpers\NovaUser;
 use Visanduma\NovaTwoFactor\NovaTwoFactor;
 use Visanduma\NovaTwoFactor\TwoFaAuthenticator;
@@ -76,7 +78,10 @@ class TwoFactorController
             $url = $this->getOnlineQrCode($company, $email, $secretKey);
 
         } else {
-            $url = (new Google2FA())->getQRCodeInline($company, $email, $secretKey, 250);
+            $isSvg = true;
+            $imageBackEnd = new SvgImageBackEnd;
+            $qrCodeService = new Bacon($imageBackEnd);
+            $url = (new Google2FA($qrCodeService))->getQRCodeInline($company, $email, $secretKey, 250);
         }
 
         $data = [
