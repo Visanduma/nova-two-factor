@@ -2,12 +2,14 @@
 
 namespace Visanduma\NovaTwoFactor\Http\Controller;
 
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use PragmaRX\Google2FA\Google2FA as G2fa;
 use PragmaRX\Google2FAQRCode\Google2FA;
+use PragmaRX\Google2FAQRCode\QRCode\Bacon;
 use Visanduma\NovaTwoFactor\Helpers\NovaUser;
 use Visanduma\NovaTwoFactor\NovaTwoFactor;
 use Visanduma\NovaTwoFactor\TwoFaAuthenticator;
@@ -72,11 +74,14 @@ class TwoFactorController
         $secretKey = $this->novaUser()->twofa->google2fa_secret;
         $isSvg = false;
 
-        if (config('nova-two-factor.use_google_qr_code_api')) {
-            $url = $this->getQRCodeUsingGoogle($company, $email, $secretKey);
+        if (! config('nova-two-factor.use_offline_qr')) {
+            $url = $this->getOnlineQrCode($company, $email, $secretKey);
+
         } else {
-            $url = (new Google2FA())->getQRCodeInline($company, $email, $secretKey, 250);
             $isSvg = true;
+            $imageBackEnd = new SvgImageBackEnd;
+            $qrCodeService = new Bacon($imageBackEnd);
+            $url = (new Google2FA($qrCodeService))->getQRCodeInline($company, $email, $secretKey, 250);
         }
 
         $data = [
@@ -132,22 +137,13 @@ class TwoFactorController
         ]);
     }
 
-    public function getQRCodeUsingGoogle($company, $holder, $secret, $size = 500)
+    public function getOnlineQrCode($company, $holder, $secret, $size = 500)
     {
-        $g2fa = new G2fa();
-        $url = $g2fa->getQRCodeUrl($company, $holder, $secret);
 
-        return self::generateGoogleQRCodeUrl('https://chart.googleapis.com/', 'chart', 'chs='.$size.'x'.$size.'&chld=M|0&cht=qr&chl=', $url);
-    }
+        $url = (new Google2FA())->getQRCodeUrl($company, $holder, $secret);
 
-    public static function generateGoogleQRCodeUrl($domain, $page, $queryParameters, $qrCodeUrl)
-    {
-        $url = $domain.
-            rawurlencode($page).
-            '?'.$queryParameters.
-            urlencode($qrCodeUrl);
+        return "https://api.qrserver.com/v1/create-qr-code/?size={$size}x{$size}&data={$url}";
 
-        return $url;
     }
 
     public function authenticate(Request $request)

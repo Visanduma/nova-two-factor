@@ -18,8 +18,8 @@ return [
     /* Encrypt the google secret values saved in database */
     'encrypt_google2fa_secrets' => false,
 
-    /* QR code can be generate using  Google API or inbuilt 'BaconQrCode' package*/
-    'use_google_qr_code_api' => true,
+    /* QR code can be generate using  online API or inbuilt 'BaconQrCode' package*/
+    'use_offline_qr' => false,
 
     'user_model' => \App\Models\User::class,
 

@@ -11,6 +11,8 @@ Laravel nova in-dashboard 2FA security feature.
 
 
 ## What's New
+### v2.2.14
+- Fixed offline QRCode display issue
 
 ### v2.2.3
 - Fixed foreign key issue (need to run migration)
@@ -94,6 +96,11 @@ return [
     /* timeout in minutes */
 
     'reauthorize_timeout' => 5,
+
+
+    /* QR code can be generate using  online API or inbuilt 'BaconQrCode' package*/
+
+    'use_offline_qr' => false,
 
 ];
 
