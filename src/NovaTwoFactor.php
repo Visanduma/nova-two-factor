@@ -3,6 +3,7 @@
 namespace Visanduma\NovaTwoFactor;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
@@ -16,8 +17,8 @@ class NovaTwoFactor extends Tool
      */
     public function boot()
     {
-        Nova::script('nova-two-factor', __DIR__ . '/../dist/js/tool.js');
-        Nova::style('nova-two-factor', __DIR__ . '/../dist/css/tool.css');
+        Nova::script('nova-two-factor', __DIR__.'/../dist/js/tool.js');
+        Nova::style('nova-two-factor', __DIR__.'/../dist/css/tool.css');
     }
 
     /**
@@ -34,29 +35,42 @@ class NovaTwoFactor extends Tool
         }
     }
 
-    public static function promptEnabled(Request $request)
+    public static function promptEnabled(Request $request): bool
     {
 
         $timeout = config('nova-two-factor.reauthorize_timeout', 5);
 
-        $promptFor = config('nova-two-factor.reauthorize_urls', []);
+        $promptFor = array_map(fn ($el) => trim(Nova::url($el), '/'), config('nova-two-factor.reauthorize_urls', []));
 
         $hasUrl = $request->is($promptFor);
 
-        $lastAttempt = session()->get('2fa.prompt_at', now()->subMinutes($timeout + 1));
+        $lastAttempt = self::getLastPromptTime();
 
-        if ($lastAttempt->diffInMinutes(now()) > $timeout && $hasUrl) {
+        if ($lastAttempt->diffInMinutes(now()) >= $timeout && $hasUrl) {
+
             return true;
         }
 
         return false;
     }
 
-
     public static function prompt()
     {
         return inertia('NovaTwoFactor.Prompt', [
-            'referer' => request()->url()
+            'referer' => request()->url(),
         ]);
+    }
+
+    public static function setLastPromptTime(): void
+    {
+        session()->put('2fa.prompt_at', now());
+    }
+
+    public static function getLastPromptTime()
+    {
+        $timeout = config('nova-two-factor.reauthorize_timeout', 5);
+
+        return session()->get('2fa.prompt_at', now()->subMinutes($timeout + 5));
+        Session::put('2fa.prompt_at', now());
     }
 }

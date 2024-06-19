@@ -40,8 +40,8 @@ return [
      * you are allowed to use wildcards pattern for url matching
      **/
     'reauthorize_urls' => [
-       // 'nova/resources/users/new',
-       // 'nova/resources/users/*/edit',
+        // 'resources/users/new',
+        // 'resources/users/*/edit',
     ],
 
     /* timeout in minutes */

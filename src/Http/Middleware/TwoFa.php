@@ -45,6 +45,11 @@ class TwoFa
             return $next($request);
         }
 
+        // turn off security if 2fa is off
+        if(!$this->novaUser()?->twoFa?->google2fa_enable){
+            return $next($request);
+        }
+
         // re prompt for OTP
         if(NovaTwoFactor::promptEnabled($request)){
             return NovaTwoFactor::prompt();
@@ -56,10 +61,7 @@ class TwoFa
             return $next($request);
         }
 
-        // turn off security if 2fa is off
-        if(!$this->novaUser()?->twoFa?->google2fa_enable){
-            return $next($request);
-        }
+
 
         return response(view('nova-two-factor::sign-in'));
     }
