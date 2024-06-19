@@ -63,7 +63,7 @@ class NovaTwoFactor extends Tool
 
     public static function setLastPromptTime(): void
     {
-        session()->put('2fa.prompt_at', now());
+        Session::put('2fa.prompt_at', now());
     }
 
     public static function getLastPromptTime()
@@ -71,6 +71,5 @@ class NovaTwoFactor extends Tool
         $timeout = config('nova-two-factor.reauthorize_timeout', 5);
 
         return session()->get('2fa.prompt_at', now()->subMinutes($timeout + 5));
-        Session::put('2fa.prompt_at', now());
     }
 }
