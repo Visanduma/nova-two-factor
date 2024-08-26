@@ -4,7 +4,8 @@
 
 </p>
 
-[![Latest Stable Version](http://poser.pugx.org/visanduma/nova-two-factor/v)](https://packagist.org/packages/visanduma/nova-two-factor) [![Total Downloads](http://poser.pugx.org/visanduma/nova-two-factor/downloads)](https://packagist.org/packages/visanduma/nova-two-factor) [![Latest Unstable Version](http://poser.pugx.org/visanduma/nova-two-factor/v/unstable)](https://packagist.org/packages/visanduma/nova-two-factor) [![License](http://poser.pugx.org/visanduma/nova-two-factor/license)](https://packagist.org/packages/visanduma/nova-two-factor) [![PHP Version Require](http://poser.pugx.org/visanduma/nova-two-factor/require/php)](https://packagist.org/packages/visanduma/nova-two-factor)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/visanduma/nova-two-factor.svg?style=flat-square)](https://packagist.org/packages/visanduma/nova-two-factor)
+[![Total Downloads](https://img.shields.io/packagist/dt/visanduma/nova-two-factor.svg?style=flat-square)](https://packagist.org/packages/visanduma/nova-two-factor)
 
 # Nova-Two-Factor
 Laravel nova in-dashboard 2FA security feature.
