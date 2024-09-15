@@ -69,7 +69,7 @@ class TwoFactorController
         $this->novaUser()->refresh();
 
         $url = null;
-        $company = config('app.name');
+        $company = config('nova-two-factor.display_name', config('app.name'));
         $email = $this->novaUser()->email;
         $secretKey = $this->novaUser()->twofa->google2fa_secret;
         $isSvg = false;
