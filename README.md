@@ -59,6 +59,8 @@ Change configs as your needs
 ``` 
 
 return [
+    // defaults to app.name when null
+    'display_name' => null,
     
      // enable or disable 2FA feature. default is enabled
     'enabled' => env('NOVA_TWO_FA_ENABLE',true),
