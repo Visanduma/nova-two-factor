@@ -6,6 +6,8 @@
  * */
 
 return [
+    /* Will be used by authenticators, defaults to app.name if null */
+    'display_name' => null,
 
     'enabled' => env('NOVA_TWO_FA_ENABLE', true),
 
