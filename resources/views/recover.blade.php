@@ -19,11 +19,11 @@
 
             <div class="mb-6 ">
                 <label class="block font-bold mb-2" for="password">{{ __('Recovery Code') }}</label>
-                <input class="form-control form-input form-input-bordered w-full" id="password" type="text" name="recovery_code" required>
+                <input class="form-control form-input form-control-bordered w-full" id="password" type="text" name="recovery_code" required>
             </div>
 
             @if($errors->any())
-                <p class="text-center font-semibold text-red-400 my-2">
+                <p class="text-center font-semibold text-red-700 my-2">
                     {{ $errors->first() }}
                 </p>
             @endif

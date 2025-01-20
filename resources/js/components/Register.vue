@@ -7,7 +7,10 @@
           <p>
             {{
               __(
-                `Two factor authentication (2FA) strengthens access security by requiring two methods (also referred to as factors) to verify your identity. Two factor authentication protects against phishing, social engineering and password brute force attacks and secures your logins from attackers exploiting weak or stolen credentials.`
+                `Two factor authentication (2FA) strengthens access security by requiring two methods (also referred to as
+            factors) to verify your identity. Two factor authentication protects against phishing, social engineering
+            and password brute force attacks and secures your logins from attackers exploiting weak or stolen
+            credentials.`
               )
             }}
           </p>
@@ -17,14 +20,14 @@
           <p class="tw-mb-3">
             {{
               __(
-                `Recovery code are used to access your account in the event you cannot receive two-factor authentication codes.`
+                `Recovery code are used to access your account in the event you cannot receive two-factor authentication
+            codes.`
               )
             }}
           </p>
           <span
-            class="tw-bg-gray-100 tw-text-gray-800 tw-text-xs tw-font-semibold tw-mr-2 tw-px-2.5 tw-py-0.5 tw-rounded"
-            >{{ __("Step 01") }}</span
-          >
+            class="tw-bg-gray-100 tw-text-gray-800 tw-text-xs tw-font-semibold tw-mr-2 tw-px-2.5 tw-py-0.5 tw-rounded">{{
+              __("Step 01") }}</span>
           <p class="no-print tw-my-4 tw-text-md">
             {{
               __(
@@ -34,21 +37,15 @@
           </p>
 
           <div
-            class="tw-mb-4 tw-border-dashed tw-border-2 tw-border-light-blue dark:border-gray-500 tw-p-4 tw-rounded-lg tw-text-center tw-bg-gray-50 dark:bg-gray-700"
-          >
+            class="tw-mb-4 tw-border-dashed tw-border-2 tw-border-light-blue dark:border-gray-500 tw-p-4 tw-rounded-lg tw-text-center tw-bg-gray-50 dark:bg-gray-700">
             <h2 class="tw-text-xl tw-text-black">{{ recovery }}</h2>
-            <a
-              class="tw-text-blue-700"
-              @click.prevent="downloadAsText('recover_code.txt', recovery)"
-              href="#"
-              >{{ __("Download") }}</a
-            >
+            <a class="tw-text-blue-700" @click.prevent="downloadAsText('recover_code.txt', recovery)" href="#">{{
+              __("Download") }}</a>
           </div>
 
           <span
-            class="tw-bg-gray-100 tw-text-gray-800 tw-text-xs tw-font-semibold tw-mr-2 tw-px-2.5 tw-py-0.5 tw-rounded"
-            >{{ __("Step 02") }}</span
-          >
+            class="tw-bg-gray-100 tw-text-gray-800 tw-text-xs tw-font-semibold tw-mr-2 tw-px-2.5 tw-py-0.5 tw-rounded">{{
+              __("Step 02") }}</span>
 
           <div class="tw-my-4 tw-text-md">
             {{
@@ -57,32 +54,17 @@
               )
             }}
             <br />
-            <input
-              v-model="form.otp"
-              @keyup="autoSubmit()"
-              :placeholder="__('Enter OTP here')"
-              type="text"
-              class="form-control form-input form-input-bordered tw-my-4"
-            />
+            <input v-model="form.otp" @keyup="autoSubmit()" :placeholder="__('Enter OTP here')" type="text"
+              class="form-control form-input form-control-bordered" />
             <br />
-            <DefaultButton
-              :disabled="loading"
-              @click="confirmOtp"
-              class="btn btn-default btn-primary"
-              >{{ __("Activate 2FA") }}</DefaultButton
-            >
+
+            <InertiaButton :disabled="loading" @click="confirmOtp" class="btn btn-default btn-primary mt-4">{{ __("Activate 2FA") }}</InertiaButton>
           </div>
         </div>
         <div class="tw-flex tw-justify-center tw-items-center">
           <div>
-            <img
-              v-if="!svg"
-              width="250"
-              height="250"
-              :src="qr_url"
-              alt="qr_code"
-              class="tw-shadow-md tw-p-5 tw-rounded-lg"
-            />
+            <img v-if="!svg" width="250" height="250" :src="qr_url" alt="qr_code"
+              class="tw-shadow-md tw-p-5 tw-rounded-lg" />
             <div v-else v-html="qr_url"></div>
           </div>
         </div>

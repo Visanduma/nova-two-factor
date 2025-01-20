@@ -43,9 +43,9 @@
 
             <br />
 
-            <DefaultButton @click="toggle">{{
+            <InertiaButton @click="toggle">{{
               __("Update Settings")
-            }}</DefaultButton>
+            }}</InertiaButton>
             <Link
               class="ml-3"
               as="button"
