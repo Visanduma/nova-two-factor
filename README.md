@@ -11,14 +11,18 @@
 Laravel nova in-dashboard 2FA security feature.
 
 ## Versions 
+Use v3.* for Laravel Nova 5
 
+Use v2.* for Laravel Nova 4
 
-Use v2.0.0 for Laravel Nova 4
-
-Use ^v1.0.0 for Laravel Nova 3
+Use ^v1.* for Laravel Nova 3
 
 
 ```
+\\ Nova 5
+
+composer require visanduma/nova-two-factor:~3
+
 \\ Nova 4
 
 composer require visanduma/nova-two-factor:~2
@@ -32,6 +36,10 @@ composer require visanduma/nova-two-factor:~1
 
 
 ## What's New
+
+### v3.0
+- Nova 5.0 support
+  
 ### v2.2.14
 - Fixed offline QRCode display issue
 
