@@ -156,7 +156,7 @@ class TwoFactorController
                 return back()->withErrors([__('Too many attempts!')]);
             }
 
-            RateLimiter::hit($throttleKey);
+            RateLimiter::hit($throttleKey, 60);
         }
 
         $authenticator = app(TwoFaAuthenticator::class)->boot(request());
