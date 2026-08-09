@@ -47,7 +47,7 @@ class TwoFactorController
 
     private function registerUser()
     {
-        $google2fa = new G2fa();
+        $google2fa = new G2fa;
         $secretKey = $google2fa->generateSecretKey();
 
         $recovery = $this->generateRecoveryCode();
@@ -140,7 +140,7 @@ class TwoFactorController
     public function getOnlineQrCode($company, $holder, $secret, $size = 500)
     {
 
-        $url = (new Google2FA())->getQRCodeUrl($company, $holder, $secret);
+        $url = (new Google2FA)->getQRCodeUrl($company, $holder, $secret);
 
         return "https://api.qrserver.com/v1/create-qr-code/?size={$size}x{$size}&data={$url}";
 

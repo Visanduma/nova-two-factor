@@ -9,7 +9,7 @@
 
             <div class="mb-6">
                 <label class="block mb-2" for="otp">{{ __('One time password') }}</label>
-                <input v-model="otp" @keyup="autoSubmit()" class="form-control form-input form-input-bordered w-full"
+                <input v-model="otp" @keyup="autoSubmit()" class="form-control form-input form-control-bordered w-full"
                     maxLength="6" id="otp" type="text" name="otp" ref="otp" autofocus="" required />
 
                 <HelpText class="mt-2 text-red-500" v-if="error">
@@ -17,11 +17,11 @@
                 </HelpText>
             </div>
 
-            <DefaultButton class="w-full flex justify-center" type="submit">
+            <InertiaButton class="w-full flex justify-center" type="submit">
                 <span>
                     {{ __('Authenticate') }}
                 </span>
-            </DefaultButton>
+            </InertiaButton>
 
         </form>
     </div>

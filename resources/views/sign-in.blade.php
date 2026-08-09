@@ -20,12 +20,12 @@
 
             <div class="mb-6"><label class="block font-bold mb-2" for="otp">{{ __('One time password') }}</label>
                 <input onkeyup="checkAutoSubmit(this)" autofocus
-                        class="form-control form-input form-input-bordered w-full" id="otp" type="text"
+                        class="form-control form-input form-control-bordered w-full" id="otp" type="text"
                         name="one_time_password" required="">
             </div>
 
             @if($errors->any())
-                <p class="text-center font-semibold text-red-400 my-2">
+                <p class="text-center font-semibold text-red-700 my-2">
                     {{ $errors->first() }}
                 </p>
             @endif
